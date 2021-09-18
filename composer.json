@@ -1,0 +1,39 @@
+{
+    "name": "oa/budget",
+    "description": "Your project description",
+    "keywords": ["Your keyword", "Another keyword"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Your Name",
+            "email": "your@email.com",
+            "role": "Creator / Main Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "filp/whoops": "^2.9",
+        "guzzlehttp/psr7": "^1.7",
+        "nikic/fast-route": "^1.3",
+        "narrowspark/http-emitter": "^1.0",
+        "doctrine/dbal": "^3.0",
+        "twig/twig": "^3.3",
+        "rdlowrey/auryn": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Budget\\": "src/",
+            "Budget\\Core\\": "src/core",
+            "Budget\\Home\\": "src/home",
+            "Budget\\Categories\\": "src/categories",
+            "Budget\\ItemGroups\\": "src/groups",
+            "Budget\\Items\\": "src/items",
+            "Budget\\PaymentModes\\": "src/modes",
+            "Budget\\UOM\\": "src/uom",
+            "Budget\\LotUnits\\": "src/lots",
+            "Budget\\Users\\": "src/users",
+            "Budget\\Transactions\\": "src/transactions",
+            "Budget\\Places\\": "src/places"
+        }
+    }
+}
