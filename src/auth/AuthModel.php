@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Budget\Categories;
+namespace Budget\Auth;
 
 use Budget\Core\AppModel;
 use DateTime;
@@ -10,89 +10,71 @@ use Exception;
 
 class AuthModel
 {
-    private $usersTbl = 'users';
-    private $id = 'category_id';
     private $model;
+    private $table = 'users';
 
-
-    public function __construct(AppModel $appModel)
+    public function __construct(AppModel $model)
     {
-        $this->model = $appModel;
+        $this->model = $model;
     }
 
-    public function getAllUsers()
+    public function signInUser($credentials)
     {
         try {
-            $sql = 'SELECT * FROM ' . $this->usersTbl;
-            return $this->db->fetchAllAssociative($sql);
-        } catch (\Exception $e) {
-            $err = 'Users - Database Exception - ';
+            $params = [
+                'fields' => [
+                    'user_name' => $credentials['username']
+                ]
+            ];
+            $user_details = $this->model->getByParams($this->table, $params);
+
+            if (password_verify($credentials['password'], $user_details[0]['password'])) {
+                /* The password is correct. */
+                return $user_details[0];
+            }
+            return false;
+        } catch (Exception $e) {
+            $err = 'Unable to Sign User - Database Exception - ';
             throw new Exception($err . $e->getMessage());
         }
     }
 
-    public function getCategoryById(string $id)
+    public function getUserDetails($user_id)
     {
         try {
-            $sql = "SELECT * FROM " . $this->table . " WHERE " . $this->id . " = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(1, $id);
-            return $stmt->execute()->fetchAllAssociative();
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to get Category - Database Exception</h3>';
+            $params = [
+                'fields' => [
+                    'user_id' => $user_id
+                ]
+            ];
+            $user_details = $this->model->getByParams($this->table, $params);
+            
+            return $user_details[0];
+        } catch (Exception $e) {
+            $err = 'Unable to get user details - Database Exception - ';
             throw new Exception($err . $e->getMessage());
         }
     }
 
-    public function addCategory(array $category)
+    public function changePassword($data, $user_id)
     {
-        try {
-            // get user id for admin as default user
-            $sql = "SELECT user_id FROM app_users WHERE user_name LIKE '%Admin%'";
-            $result = $this->db->fetchAllAssociative($sql);
+        $params = [
+            'fields' => [
+                'user_id' => $user_id
+            ]
+        ];
+        $details = $this->model->getByParams($this->table, $params);
 
-            $this->db->insert(
-                $this->table,
-                array(
-                    'category_name' => $category['category_name'],
-                    'category_desc' => $category['category_desc'],
-                    'created_by' => $result[0]['user_id'],
-                    'updated_by' => $result[0]['user_id']
-                )
-            );
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to Add Category - Database Exception</h3><br><br>';
-            return $err . $e->getMessage();
+        if (!password_verify($data['current_password'], $details[0]['password'])) {
+            throw new Exception("Password do not match");
         }
-    }
 
-    public function updateCategory(array $category)
-    {
-        $update = new DateTime('now');
-        $updated_at = $update->format('Y-m-d H:i:s.u P');
-        try {
-            $this->db->update(
-                $this->table,
-                array(
-                    'category_name' => $category['category_name'],
-                    'category_desc' => $category['category_desc'],
-                    'updated_at' => $updated_at,
-                ),
-                array($this->id => $category[$this->id])
-            );
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to Update Category - Database Exception</h3>';
-            throw new Exception($err . $e->getMessage());
-        }
-    }
+        $updateData = [
+            'password' => password_hash($data['new_password'], PASSWORD_DEFAULT)
+        ];
 
-    public function deleteCategory(string $id)
-    {
-        try {
-            $this->db->delete($this->table, array($this->id => $id));
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to Delete Category - </h3>';
-            throw new Exception($err . $e->getMessage());
-        }
+        return $this->model->updateByParams($this->table, $updateData, [
+            'user_id' => $user_id
+        ]);
     }
 }

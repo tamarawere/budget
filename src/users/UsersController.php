@@ -5,41 +5,27 @@ declare(strict_types=1);
 namespace Budget\Users;
 
 use Budget\Core\AppController;
+use Exception;
 
-class UsersController extends AppController
+class UsersController
 {
-    private $usersModel, $responseBody;
+    private $model, $controller;
 
-    public function __construct()
+    public function __construct(AppController $controller, UsersModel $model)
     {
-        parent::__construct();
-        $this->usersModel = new UsersModel();
-        $this->responseBody = $this->appResponse->getBody();
+        $this->controller = $controller;
+        $this->model = $model;
     }
 
-    public function addUser()
+    public function registerUser()
     {
-        if (empty($this->appRequest->getParsedBody())) {
-            $userDetails = json_decode(file_get_contents("php://input"));
-        } else {
-            $userDetails = $this->appRequest->getParsedBody();
-        }
-
-        if (!empty($userDetails)) {
-            try {
-                $this->usersModel->addUser((array)$userDetails);
-                $this->responseBody->write('everything ok');
-                return $this->appResponse->withBody($this->responseBody);
-            } catch (\Exception $e) {
-                $this->responseBody->write($e->getMessage());
-                return $this->appResponse->withBody($this->responseBody);
-            }
-        } else {
-            $this->responseBody->write('have to write somethin');
-            return $this->appResponse
-                ->withBody($this->responseBody)
-                ->withHeader('Content-Type', 'text/plain')
-                ->withStatus(400, 'no user data received');
+        try {
+            //getting from input
+            $this->model->addUser($this->controller->getPostData());
+            return $this->controller->setResponse('login', []);
+        } catch (Exception $e) {
+            $data = ['error' => 'Registration Error - ' . $e->getMessage()];
+            return $this->controller->setErrorResponse('login', $data);
         }
     }
 

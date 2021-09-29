@@ -24,6 +24,14 @@ class AppController
         $this->setAppHeaders();
     }
 
+    public function checkLogin()
+    {
+        if (isset($GLOBALS['isLoggedIn']) && $GLOBALS['isLoggedIn']) {
+            return true;
+        }
+        return false;
+    }
+
     private function setAppHeaders()
     {
         return $GLOBALS['config']['app_headers'];

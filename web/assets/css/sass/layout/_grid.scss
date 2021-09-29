@@ -1,0 +1,62 @@
+@use '../utils/breakpoints'as bp;
+@use '../utils/mixins'as mx;
+
+
+/** == container definition == */
+.container {
+    font-size: .9em;
+    height: 100vh;
+    width: 100vw;
+    padding: 0em;
+    display: grid;
+    grid-template-columns: repeat(36, [col-start] 1fr);
+    grid-template-rows: 3em 1fr;
+    overflow: hidden;
+}
+
+/** == ROW ONE == */
+#mainMenuToggle {
+    @include mx.grid(1, 36, 1);
+}
+
+/** == ROW TWO == */
+.main-menu {
+    @include mx.grid(1, 36, 2, center, start);
+}
+
+.content {
+    @include mx.grid(1, 36, 2);
+}
+
+.footer {
+    @include mx.grid(1, 36, 2, center, end);
+}
+
+@media (min-width: bp.$bp-992) {
+
+    /** == container definition == */
+    .container {
+        grid-template-rows: 3em 1fr;
+    }
+
+    /** == ROW ONE == */
+    .main-menu {
+        @include mx.grid(1, 36, 1, start, center);
+    }
+
+    /** == ROW TWO == */
+    .content {
+        @include mx.grid(1, 36, 2);
+    }
+
+    /** == ROW THREE == */
+    .footer {
+        @include mx.grid(1, 36, 3);
+    }
+
+    /** == HIDDEN ITEMS == */
+    #mainMenuToggle {
+        display: none;
+    }
+
+}

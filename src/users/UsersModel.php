@@ -18,8 +18,8 @@ class UsersModel extends AppModel
         try {
             $sql = 'SELECT * FROM ' . $this->table;
             $allUsers = $this->db->fetchAllAssociative($sql);
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to get all Users - Database Exception</h3>';
+        } catch (Exception $e) {
+            $err = 'Unable to get all Users - Database Exception - ';
             throw new Exception($err . $e->getMessage());
         }
         return $allUsers;
@@ -33,7 +33,7 @@ class UsersModel extends AppModel
             $stmt->bindValue(1, $id);
             return $stmt->execute()->fetchAllAssociative();
         } catch (\Exception $e) {
-            $err = '<h3>Unable to get User - Database Exception</h3>';
+            $err = 'Unable to get User - Database Exception - ';
             throw new Exception($err . $e->getMessage());
         }
     }
@@ -44,12 +44,15 @@ class UsersModel extends AppModel
             $this->db->insert(
                 $this->table,
                 array(
-                    'user_name' => $user['user_name'],
-                    'full_name' => $user['full_name'],
+                    'username' => $user['username'],
+                    'fullname' => $user['fullname'],
+                    'email' => $user['email'],
+                    'password' => $user['password'],
+                    'status' => 'ative',
                 )
             );
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to Add User - Database Exception</h3><br><br>';
+        } catch (Exception $e) {
+            $err = 'Unable to Add User - Database Exception - ';
             throw new Exception($err . $e->getMessage());
         }
     }

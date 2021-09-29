@@ -1,0 +1,38 @@
+@use '../utils/breakpoints'as bp;
+@use '../utils/mixins'as mx;
+@use '../utils/colours'as cl;
+
+.main-menu {
+    @include mx.drop-down(top,0,right);
+
+    ul li:last-child {
+        border-top: 2px solid cl.$grey2;
+    }
+
+    ul li a {
+        color: cl.$grey5;
+        font-weight: bold;
+    }
+
+    @media (min-width: bp.$bp-992) {
+        @include mx.drop-down(top,1,left);
+        padding: 0 .2em;
+        border: 0;       
+        background: transparent;
+
+        h3 {
+            display: none;
+        }
+
+        ul li {
+            display: inline;
+            margin-right: .5em;
+        }
+
+        ul li:last-child {
+            padding-left: .7em;
+            border-left: 2px solid cl.$grey2;
+            border-top: 0;
+        }
+    }
+}

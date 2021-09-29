@@ -66,6 +66,8 @@ $routeInfo = $dispatcher->dispatch($request->getMethod(), $path);
 
 switch ($routeInfo[0]) {
     case Dispatcher::NOT_FOUND:
+
+        print_r(['Not Found'=>$path]); die;
         $response = new Response();
         $response->getBody()->write('route not found');
         break;
@@ -85,13 +87,14 @@ switch ($routeInfo[0]) {
         session_set_save_handler($objSessionHandler, true);
         session_start();
 
-        // if (isset($routeInfo[3]) && $routeInfo[3] == 1) {
-        //     $objController = $injector->make('Budget\Core\Classes\Controller');
-        //     if ($objController->checkLoggedIn() == false) {
-        //         $response = $objController->setRedirect('/login');
-        //         break;
-        //     }
-        // }
+        if (isset($routeInfo[1][2]) && $routeInfo[1][2] == 1) {
+            
+            $objController = $injector->make('Budget\Core\AppController');
+            if ($objController->checkLogin() == false) {
+                $response = $objController->setRedirect('login');
+                break;
+            }
+        }
 
         $class = $injector->make($className);
         $response = $class->$method($vars);

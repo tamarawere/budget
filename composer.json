@@ -25,6 +25,7 @@
             "Budget\\": "src/",
             "Budget\\Core\\": "src/core",
             "Budget\\Home\\": "src/home",
+            "Budget\\Auth\\": "src/auth",
             "Budget\\Categories\\": "src/categories",
             "Budget\\ItemGroups\\": "src/groups",
             "Budget\\Items\\": "src/items",

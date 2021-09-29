@@ -6,6 +6,7 @@ namespace Budget\Core;
 
 return [
     'env' => 'dev',
+    'host' => 'http://localhost/',
     'base_path' => '/apps/budget/be/php/v2/',
     'app_headers' => [
         'Access-Control-Allow-Origin' => '*',
@@ -25,7 +26,8 @@ return [
     ],
     'modules' => [
         'home', 
-        'core', 
+        'core',
+        'categories', 
         'auth', 
         'groups',
         'items',
@@ -37,5 +39,11 @@ return [
         'users',
     ],
     // App Timezone
-    'tz' => 'Asia/Jerusalem'
+    'tz' => 'Asia/Jerusalem',
+    'twig' => [
+        'template' => 'web/assets/template/files/',
+        'css' => 'web/assets/css/',
+        'js' => '',
+        'img' => '',
+    ]
 ];

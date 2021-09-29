@@ -1,0 +1,65 @@
+@use '../utils/breakpoints'as bp;
+@use '../utils/colours'as cl;
+
+@mixin grid ($colStart, $colSpan, $row, $justify: center, $align:center) {
+    grid-column: $colStart / span $colSpan;
+    grid-row: $row;
+    justify-self: $justify;
+    align-self: $align;
+}
+
+@mixin drop-down ($origin: bottom, $scale-opacity: 0, $text-align: center) {
+    text-align: $text-align;
+    width: 100%;
+    z-index: 999;
+    transform: scaleY($scale-opacity);
+    @include transition($origin);
+    opacity: $scale-opacity;
+    @include dropdown-border($origin);
+    padding: .5em 2em;
+
+    ul li {
+        display: block;
+    }
+
+    a {
+        color: cl.$grey5;
+    }
+}
+
+@mixin undo-drop-down {
+    transform: scaleY(1);
+    opacity: 1;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    width: 100%;
+    padding: initial;
+}
+
+@mixin transition ($origin) {
+    transform-origin: $origin;
+    transition-duration: 900ms;
+    transition-timing-function: cubic-bezier(0, .6, 0, 1);
+}
+
+@mixin dropdown-border ($edge: top) {
+    background: cl.$dropdown-bg;
+    border: 3px solid cl.$blu;
+
+    @if $edge==top {
+        border-radius: 0 0 8px 8px;
+    }
+
+    @else {
+        border-radius: 8px 8px 0 0;
+    }
+}
+
+@mixin toggle-btn {
+    background: transparent;
+    font-size: 1.3em;
+    text-align: center;
+    color: rgb(68, 68, 68);
+    width: 100%;
+}

@@ -2,108 +2,104 @@
 
 declare(strict_types=1);
 
-namespace Budget\Categories;
+namespace Budget\Auth;
 
 use Budget\Core\AppController;
+use Exception;
+use Psr\Http\Message\ResponseInterface;
 
-class AuthController extends AppController
+class AuthController
 {
-    private $categoriesModel, $responseBody;
+    private $controller;
+    private $model;
 
-    public function __construct()
+    public function __construct(AppController $controller, AuthModel $auth_model)
     {
-        parent::__construct();
-        $this->categoriesModel = new CategoriesModel();
-        $this->responseBody = $this->appResponse->getBody();
+        $this->controller = $controller;
+        $this->model = $auth_model;
     }
 
-    public function addCategory()
+    public function showLoginPage(): ResponseInterface
     {
-        if (empty($this->appRequest->getParsedBody())) {
-            $categoryDetails = json_decode(file_get_contents("php://input"));
-        } else {
-            $categoryDetails = $this->appRequest->getParsedBody();
-        }
+        return $this->controller->setResponse('login');
+    }
 
-        if (!empty($categoryDetails)) {
+    public function showRegisterPage(): ResponseInterface
+    {
+        return $this->controller->setResponse('register');
+    }
+
+    public function loginUser(): ResponseInterface
+    {
+        if ($this->controller->getRequest()->getMethod() === 'POST') {
+            //getting from input
+            $loginData = $this->controller->getPostData();
+
             try {
-                $this->categoriesModel->addCategory((array)$categoryDetails);
-                $this->responseBody->write('everything ok');
-                return $this->appResponse->withBody($this->responseBody);
-            } catch (\Exception $e) {
-                $this->responseBody->write($e->getMessage());
-                return $this->appResponse->withBody($this->responseBody);
+                $user_details = $this->model->signInUser($loginData);
+
+                if (!isset($user_details) || $user_details === false) {
+                    $data = ['error' => 'Wrong Username/Password'];
+                    return $this->controller->setResponse('login', $data);
+                }
+                $this->setSession($user_details);
+
+                $data = [];
+
+                return $this->controller->setResponse('dash', $data);
+            } catch (Exception $e) {
+                $data = ['error' => 'Login Errors' . $e->getMessage()];
+
+                return $this->controller->setErrorResponse('login', $data);
             }
-        } else {
-            $this->responseBody->write('have to write somethin');
-            return $this->appResponse
-                ->withBody($this->responseBody)
-                ->withHeader('Content-Type', 'text/plain')
-                ->withStatus(400, 'no category data received');
         }
     }
 
-    public function getAllCategories()
-    {
-        $categories = $this->categoriesModel->getAllCategories();
-
-        $catArray = [];
-        foreach ($categories as $cat) {
-            array_push($catArray, $cat);
-        }
-        $result = json_encode($catArray);
-        $this->responseBody->write($result);
-
-        return $this->appResponse->withBody($this->responseBody);
-    }
-
-    public function getCategoryById(array $id)
-    {
-        $category = $this->categoriesModel->getCategoryById($id['id']);
-        $result = json_encode($category);
-        $this->responseBody->write($result);
-        return $this->appResponse->withBody($this->responseBody);
-    }
-
-    /**
-     * Update Details About A Category.
-     * Uses the ID to fetch
-     */
-    public function updateCategory(array $id)
-    {
-        if (empty($this->appRequest->getParsedBody())) {
-            $categoryDetails = json_decode(file_get_contents("php://input"));
-        } else {
-            $categoryDetails = $this->appRequest->getParsedBody();
-        }
-        // print_r($categoryDetails->category_name);
-
-        $category['category_name'] = $categoryDetails->category_name;
-        $category['category_desc'] = $categoryDetails->category_desc;
-
-        try {
-            $category['category_id'] = $id['id'];
-            $this->categoriesModel->updateCategory($category);
-            $this->responseBody->write('category updated successfully');
-            return $this->appResponse->withBody($this->responseBody);
-        } catch (\Exception $e) {
-            $this->responseBody->write($e->getMessage());
-            return $this->appResponse
-                ->withBody($this->responseBody)
-                ->withHeader('Content-Type', 'text/plain')
-                ->withStatus(400, 'DATABASE EXCEPTION');
-        }
-    }
-
-    public function deleteCategory(array $id)
+    public function changePassword()
     {
         try {
-            $this->categoriesModel->deleteCategory($id['id']);
-            $this->responseBody->write('category deleted successfully');
-            return $this->appResponse->withBody($this->responseBody);
-        } catch (\Exception $e) {
-            $this->responseBody->write($e->getMessage());
-            return $this->appResponse->withBody($this->responseBody);
+            $data = $this->controller->getPostData();
+
+            // $this->controller->validate($data, [
+            //     'current_password' => 'required',
+            //     'new_password' => 'required'
+            // ]);
+
+            $this->model->changePassword($data, $this->controller->user_id);
+
+            $data = [
+                'success' => 'Password changed successfully'
+            ];
+
+            return $this->controller->setResponse('dash', $data);
+        } catch (Exception $e) {
+            $data = ['error' => 'Login Errors' . $e->getMessage()];
+
+            return $this->controller->setErrorResponse('login', $data);
         }
+    }
+
+    private function setSession($user_data): void
+    {
+        $_SESSION["id"] = session_id();
+        $_SESSION["userId"] = $user_data['user_id'];
+        $_SESSION["isLoggedIn"] = true;
+        $_SESSION["username"] = $user_data['user_name'];
+        $_SESSION["hostname"] = $GLOBALS['config']['host'];
+        $_SESSION["uri"] = $GLOBALS['config']['uri'];
+        return;
+    }
+
+    private function deleteSession()
+    {
+        $_SESSION = array();
+        session_destroy();
+        return;
+    }
+
+    public function logoutUser()
+    {
+        $this->deleteSession();
+        return $this->controller->setRedirect('login');
     }
 }

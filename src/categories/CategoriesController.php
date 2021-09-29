@@ -5,18 +5,29 @@ declare(strict_types=1);
 namespace Budget\Categories;
 
 use Budget\Core\AppController;
+use Exception;
 
-class CategoriesController extends AppController
+class CategoriesController
 {
-    private $categoriesModel, $responseBody;
+    private $model, $controller;
 
-    public function __construct()
+    public function __construct(AppController $controller, CategoriesModel $model)
     {
-        parent::__construct();
-        $this->categoriesModel = new CategoriesModel();
-        $this->responseBody = $this->appResponse->getBody();
+        $this->model = $model;
+        $this->controller = $controller;
     }
 
+    public function index()
+    {
+        try {
+            $data = [
+                'header' => 'Category DashBoard',
+            ];
+            return $this->controller->setResponse('cat_home', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
     public function addCategory()
     {
         if (empty($this->appRequest->getParsedBody())) {

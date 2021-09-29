@@ -1,0 +1,120 @@
+@use '../utils/breakpoints'as bp;
+@use '../utils/mixins'as mx;
+@use '../utils/colours'as cl;
+
+.content {
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+    border-top: 3px solid cl.$blu;
+    border-bottom: 3px solid cl.$blu;
+    padding: 0 .4em 0 .4em;
+    display: flex;
+    flex-flow: column nowrap;
+
+    .content_header {
+        order: 0;
+        flex-grow: 1;
+        flex-basis: 10%;
+        max-height: 50px;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        padding-top: .5em;
+        padding-bottom: .5em;
+        font-size: .9em;
+        font-weight: 600;
+
+        #breadcrumb {
+            order: 1;
+            flex-grow: 1;
+            flex-basis: 70%;
+            padding-left: 2%;
+
+            h3 {
+                display: inline;
+            }
+        }
+
+        .context-btns-lg {
+            display: none;
+        }
+
+        .context-btns-sm {
+            order: 3;
+            flex-grow: 1;
+            flex-basis: 100%;
+            text-align: center;
+            padding-right: 0.5%;
+        }
+
+        @media(min-width: bp.$bp-768) {
+            #breadcrumb {
+                order: 0;
+                flex-grow: 1;
+                flex-basis: 40%;
+                padding-left: 2%;
+            }
+
+            .context-btns-lg {
+                display: initial;
+                order: 1;
+                flex-grow: 1;
+                flex-basis: 60%;
+                text-align: right;
+                padding-right: 0.5%;
+            }
+        }
+    }
+
+    .content_detail {
+        order: 1;
+        flex-grow: 1;
+        flex-basis: 85%;
+        border-top: 2px solid cl.$blu;
+        border-bottom: 2px solid cl.$blu;
+
+        .tx-card {
+            display: flex;
+        }
+    }
+
+    .content_footer {
+        order: 2;
+        flex-grow: 1;
+        flex-basis: 5%;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: flex-end;
+        max-height: 50px;
+    }
+
+    /**
+      TODO ... this is a hack and should be made neater.
+      this class corrects the height when the context 
+      buttons are re-positioned at breakpoint 768
+     */
+    .resize-header {
+        max-height: 63px;
+        padding-bottom: 2em;
+
+        h2 {
+            background-color: transparent;
+        }
+
+        .context-btns-sm {
+            text-align: left;
+        }
+    }
+
+    @media (min-width: bp.$bp-768) {}
+}
+
+.header-height-lg {
+    max-height: 30px;
+}
+
+.header-height-sm {
+    max-height: 63px;
+}

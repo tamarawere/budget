@@ -1,16 +1,22 @@
 Options -Indexes
 RewriteEngine On
 
+RewriteRule ^web\/assets\/(.*)$ web/assets/$1 [L,NC]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !(index\.php|public|css|js|robots\.txt) 
-RewriteRule ^ /apps/budget/be/php/v1/web/ [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !(index\.php|web|css|js|robots\.txt) 
+RewriteRule ^ /apps/budget/be/php/v2/web/ [QSA,L]
 
-RewriteCond %{THE_REQUEST} ^src\/(.*) [nc]
-RewriteRule ^src\/(.*)$ src/$1 [r=301,nc]
+# RewriteCond %{THE_REQUEST} ^src\/(.*) [nc]
+# RewriteRule ^src\/(.*)$ src/$1 [r=301,nc]
 
-RewriteCond %{THE_REQUEST} /web/([^\s?]*) [NC]
-RewriteRule ^ %1 [L,NE,R=302]
+RewriteRule ^uploads\/(.*)$ uploads/$1 [L,NC]
+
+
+
+# RewriteCond %{THE_REQUEST} /web/([^\s?]*) [NC]
+# RewriteRule ^ %1 [L,NE,R=302]
 
 RewriteRule ^((?!web/).*)$ web/$1 [L,NC]
 
@@ -20,7 +26,9 @@ RewriteRule ^((?!web/).*)$ web/$1 [L,NC]
 # # if %{THE_REQUEST} path starts with "/web/assets/"
 # # then get file directly. Used to load css js img
 # RewriteCond %{THE_REQUEST} /web/assets/([^\s?]*)
-# RewriteRule ^ web/assets/%1 [L]
+# RewriteRule ^web/assets/ web/assets/%1 [L]
+
+
 
 # RewriteCond %{THE_REQUEST} /web/([^\s?]*)
 # RewriteRule ^ /web/%1 [L,NE,R=302]

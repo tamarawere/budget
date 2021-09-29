@@ -6,17 +6,21 @@ namespace Budget\PaymentModes;
 
 use Budget\Core\AppController;
 
-class PaymentModesController extends AppController
+class PaymentModesController
 {
-    private $paymentModesModel, $responseBody;
+    private $paymentModesModel, $controller;
 
-    public function __construct()
+    public function __construct(AppController $controller, PaymentModesModel $model)
     {
-        parent::__construct();
-        $this->paymentModesModel = new PaymentModesModel();
-        $this->responseBody = $this->appResponse->getBody();
+        $this->model = $model;
+        $this->controller = $controller;
     }
 
+    public function index()
+    {
+        die('INSIDE PAYMENT MODES CONTROLLER INDEX METHOD');
+    }
+    
     public function addPaymentMode()
     {
         if (empty($this->appRequest->getParsedBody())) {

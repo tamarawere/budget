@@ -34,17 +34,24 @@ $injector->delegate('Twig\Environment', function () use ($injector) {
     $templates = [];
 
     foreach ($modules as $module) {
-        if ($module !== 'core') {
-            $dir = dirname(__DIR__) . '/' . $module . '/views';
-            array_push($templates, $dir);
-        }
+        $dir = dirname(__DIR__) . '/' . $module . '/views';
+        array_push($templates, $dir);
     }
 
     try {
         $loader = new FilesystemLoader($templates);
         $twig = new Environment($loader, ['debug' => true, 'charset' => 'utf-8', 'strict_variables' => true]);
+
+        foreach ($modules as $module) {
+            $twig->addGlobal($module, $GLOBALS['config']['base_path'] . $module . '/');
+        }
+
         $twig->addGlobal('base_path', $GLOBALS['config']['base_path']);
-        // $twig->addGlobal('session', $_SESSION);
+        $twig->addGlobal('template', $GLOBALS['config']['twig']['template']);
+        $twig->addGlobal('css', $GLOBALS['config']['twig']['css']);
+        $twig->addGlobal('js', $GLOBALS['config']['twig']['js']);
+        $twig->addGlobal('img', $GLOBALS['config']['twig']['img']);
+        $twig->addGlobal('session', $_SESSION);
         $twig->addExtension(new DebugExtension);
         return $twig;
     } catch (Exception $e) {
