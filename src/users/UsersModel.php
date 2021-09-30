@@ -11,7 +11,12 @@ use Exception;
 class UsersModel extends AppModel
 {
     private $table = 'app_users';
-    private $id = 'user_id';
+    private $model;
+
+    public function __construct(AppModel $model)
+    {
+        $this->model = $model;
+    }
 
     public function getAllUsers(): ?array
     {
@@ -41,19 +46,26 @@ class UsersModel extends AppModel
     public function addUser(array $user)
     {
         try {
-            $this->db->insert(
-                $this->table,
-                array(
-                    'username' => $user['username'],
-                    'fullname' => $user['fullname'],
-                    'email' => $user['email'],
-                    'password' => $user['password'],
-                    'status' => 'ative',
-                )
-            );
+
+            $data = [
+                'username' => $user['username'],
+                'fullname' => $user['fullname'],
+                'email' => $user['email'],
+                'password' => password_hash($user['password'], PASSWORD_DEFAULT),
+                'status' => true,
+                'created_at' => $this->model->now,
+                'updated_at' => $this->model->now,
+            ];
+
+            $result = $this->model->add($this->table, $data);
+
+            if ($result == 1) {
+                return true;
+            }
+            return false;
+
         } catch (Exception $e) {
-            $err = 'Unable to Add User - Database Exception - ';
-            throw new Exception($err . $e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 

@@ -41,8 +41,8 @@ return [
     // App Timezone
     'tz' => 'Asia/Jerusalem',
     'twig' => [
-        'template' => 'web/assets/template/files/',
-        'css' => 'web/assets/css/',
+        'template' => '/apps/budget/be/php/v2/web/assets/template/files/',
+        'css' => '/apps/budget/be/php/v2/web/assets/css/',
         'js' => '',
         'img' => '',
     ]

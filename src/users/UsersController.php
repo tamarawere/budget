@@ -22,10 +22,10 @@ class UsersController
         try {
             //getting from input
             $this->model->addUser($this->controller->getPostData());
-            return $this->controller->setResponse('login', []);
+            return $this->controller->setRedirect('login');
         } catch (Exception $e) {
             $data = ['error' => 'Registration Error - ' . $e->getMessage()];
-            return $this->controller->setErrorResponse('login', $data);
+            return $this->controller->setErrorResponse('register', $data);
         }
     }
 

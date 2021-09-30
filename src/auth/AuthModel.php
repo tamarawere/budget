@@ -11,7 +11,7 @@ use Exception;
 class AuthModel
 {
     private $model;
-    private $table = 'users';
+    private $table = 'app_users';
 
     public function __construct(AppModel $model)
     {
@@ -23,14 +23,14 @@ class AuthModel
         try {
             $params = [
                 'fields' => [
-                    'user_name' => $credentials['username']
+                    'username' => $credentials['username']
                 ]
             ];
             $user_details = $this->model->getByParams($this->table, $params);
 
-            if (password_verify($credentials['password'], $user_details[0]['password'])) {
+            if (password_verify($credentials['password'], $user_details['password'])) {
                 /* The password is correct. */
-                return $user_details[0];
+                return $user_details;
             }
             return false;
         } catch (Exception $e) {

@@ -70,8 +70,7 @@ class AppModel
     public function add(string $table, array $data)
     {
         try {
-            $this->db->insert($table, $data);
-            return true;
+            return $this->db->insert($table, $data);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -132,8 +131,11 @@ class AppModel
             if (isset($result)) {
                 if (count($result) > 1) {
                     return $result;
-                } elseif (isset($result[0])) {
-                    return $result[0];
+                } elseif (count($result) == 1) {
+                    if (isset($result[0])) {
+                        return $result[0];
+                    }
+                    return $result;
                 } else {
                     return $result;
                 }

@@ -31,27 +31,24 @@ class AuthController
 
     public function loginUser(): ResponseInterface
     {
-        if ($this->controller->getRequest()->getMethod() === 'POST') {
-            //getting from input
-            $loginData = $this->controller->getPostData();
+        try {
+            $user_details = $this->model->signInUser($this->controller->getPostData());
 
-            try {
-                $user_details = $this->model->signInUser($loginData);
+            //print_r($user_details); die;
 
-                if (!isset($user_details) || $user_details === false) {
-                    $data = ['error' => 'Wrong Username/Password'];
-                    return $this->controller->setResponse('login', $data);
-                }
-                $this->setSession($user_details);
-
-                $data = [];
-
-                return $this->controller->setResponse('dash', $data);
-            } catch (Exception $e) {
-                $data = ['error' => 'Login Errors' . $e->getMessage()];
-
-                return $this->controller->setErrorResponse('login', $data);
+            if (!isset($user_details) || $user_details === false) {
+                $data = ['error' => 'Wrong Username/Password'];
+                return $this->controller->setResponse('login', $data);
             }
+            $this->setSession($user_details);
+
+            $data = [];
+
+            return $this->controller->setResponse('dash', $data);
+        } catch (Exception $e) {
+            $data = ['error' => 'Login Errors' . $e->getMessage()];
+
+            return $this->controller->setErrorResponse('login', $data);
         }
     }
 
@@ -84,9 +81,8 @@ class AuthController
         $_SESSION["id"] = session_id();
         $_SESSION["userId"] = $user_data['user_id'];
         $_SESSION["isLoggedIn"] = true;
-        $_SESSION["username"] = $user_data['user_name'];
+        $_SESSION["username"] = $user_data['username'];
         $_SESSION["hostname"] = $GLOBALS['config']['host'];
-        $_SESSION["uri"] = $GLOBALS['config']['uri'];
         return;
     }
 

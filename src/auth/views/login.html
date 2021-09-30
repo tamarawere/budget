@@ -41,7 +41,8 @@
         <div class="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative"
             style="background:url({{template}}images/big/auth-bg.jpg) no-repeat center center;">
             <div class="auth-box row">
-                <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url({{template}}images/big/3.jpg);">
+                <div class="col-lg-7 col-md-5 modal-bg-img"
+                    style="background-image: url({{template}}images/big/3.jpg);">
                 </div>
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
@@ -50,19 +51,32 @@
                         </div>
                         <h2 class="mt-3 text-center">Sign In</h2>
                         <p class="text-center">Enter your email address and password to access admin panel.</p>
-                        <form class="mt-4">
+                        <form class="mt-4" method="POST" action="{{auth}}login">
+
+                            {% if error is defined %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        {{error}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endif %}
+
+
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="text-dark" for="uname">Username</label>
-                                        <input class="form-control" id="uname" type="text"
+                                        <input class="form-control" name="username" id="uname" type="text"
                                             placeholder="enter your username">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="text-dark" for="pwd">Password</label>
-                                        <input class="form-control" id="pwd" type="password"
+                                        <input class="form-control" name="password" id="pwd" type="password"
                                             placeholder="enter your password">
                                     </div>
                                 </div>
@@ -70,7 +84,8 @@
                                     <button type="submit" class="btn btn-block btn-dark">Sign In</button>
                                 </div>
                                 <div class="col-lg-12 text-center mt-5">
-                                    Don't have an account? <a href="{{base_path}}register" class="text-danger">Sign Up</a>
+                                    Don't have an account? <a href="{{base_path}}register" class="text-danger">Sign
+                                        Up</a>
                                 </div>
                             </div>
                         </form>
