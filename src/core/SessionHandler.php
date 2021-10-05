@@ -97,9 +97,17 @@ class SessionHandler implements SessionHandlerInterface
             /**
              * check if an old session exists
              */
-            if (isset($old_sess) && is_iterable($old_sess)) {
-                // if session exists, destroy it
-                $this->destroy($session_id);
+            if (!empty($old_sess)) {
+
+                if ($old_sess['session_data'] == 'empty') {
+                    // if session exists, destroy it
+                    $this->destroy($session_id);
+                    $result = $this->model->add($this->table, $sess_data);
+                    return true;
+                } else {
+                    session_decode($old_sess['session_data']);
+                    return TRUE;
+                }
             }
             $result = $this->model->add($this->table, $sess_data);
             return TRUE;

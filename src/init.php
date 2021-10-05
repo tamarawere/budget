@@ -55,9 +55,7 @@ $routeDefinitionCallback = function (RouteCollector $r) {
     foreach ($routesArray as $route) {
 
         $r->addRoute($route[0], $route[1], $route[2]);
-
     }
-
 };
 
 $dispatcher = simpleDispatcher($routeDefinitionCallback);
@@ -67,7 +65,8 @@ $routeInfo = $dispatcher->dispatch($request->getMethod(), $path);
 switch ($routeInfo[0]) {
     case Dispatcher::NOT_FOUND:
 
-        print_r(['Not Found'=>$path]); die;
+        print_r(['Not Found' => $path]);
+        die;
         $response = new Response();
         $response->getBody()->write('route not found');
         break;
@@ -87,12 +86,17 @@ switch ($routeInfo[0]) {
         session_set_save_handler($objSessionHandler, true);
         session_start();
 
-        if (isset($routeInfo[1][2]) && $routeInfo[1][2] == 1) {
-            
+        if (!isset($routeInfo[1][2])) {
+            // Route requires authentication
             $objController = $injector->make('Budget\Core\AppController');
+
             if ($objController->checkLogin() == false) {
                 $response = $objController->setRedirect('login');
-                break;
+                $emitter->emit($response);
+                exit;
+            } else {
+                $class = $injector->make($className);
+                $response = $class->$method($vars);
             }
         }
 

@@ -9,27 +9,31 @@ use Psr\Http\Message\ResponseInterface;
 
 class AppController
 {
-    protected $request;
-    protected $response;
-    protected $renderer;
+    private $request;
+    private $response;
+    private $model;
+    private $renderer;
 
     public function __construct(
         ResponseInterface $response,
-        Renderer $renderer
+        Renderer $renderer,
+        AppModel $model
     ) {
         $this->request = ServerRequest::fromGlobals();
         $this->response = $response;
         $this->response_body = $response->getBody();
         $this->renderer = $renderer;
+        $this->model = $model;
         $this->setAppHeaders();
     }
 
     public function checkLogin()
     {
+        $isLoggedIn = false;
         if (isset($GLOBALS['isLoggedIn']) && $GLOBALS['isLoggedIn']) {
-            return true;
+            $isLoggedIn = true;
         }
-        return false;
+        return $isLoggedIn;
     }
 
     private function setAppHeaders()
@@ -96,7 +100,7 @@ class AppController
     public function setResponse(
         string $template = '',
         array $template_data = [],
-        string $status = '400',
+        string $status = '200',
         string $mime = 'text/html'
     ): ResponseInterface {
 

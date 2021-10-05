@@ -44,7 +44,7 @@ class AuthController
 
             $data = [];
 
-            return $this->controller->setResponse('dash', $data);
+            return $this->controller->setRedirect('');
         } catch (Exception $e) {
             $data = ['error' => 'Login Errors' . $e->getMessage()];
 

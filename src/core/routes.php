@@ -16,9 +16,9 @@ $homeController = 'Budget\Home\HomeController';
 
 return [
     // AUTHENTICATION API
-    ['GET', 'login', [$authController, 'showLoginPage']],
-    ['POST', 'auth/login', [$authController, 'loginUser']],
-    ['GET', 'register', [$authController, 'showRegisterPage']],
+    ['GET', 'login', [$authController, 'showLoginPage',1]],
+    ['POST', 'auth/login', [$authController, 'loginUser',1]],
+    ['GET', 'register', [$authController, 'showRegisterPage',1]],
     ['POST', 'auth/register', [$userController, 'registerUser']],
     ['POST', 'change_pass', [$authController, 'changePassword']],
     
