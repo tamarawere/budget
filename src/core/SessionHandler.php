@@ -20,6 +20,7 @@ class SessionHandler implements SessionHandlerInterface
      * to save session data
      */
     private $table = 'app_sessions';
+    private $old_sessions = 'app_old_sessions';
 
     /**
      * the name of the id column or 
@@ -61,7 +62,7 @@ class SessionHandler implements SessionHandlerInterface
                 return $sess_id['session_data'];
             }
             return '';
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $err = 'Session Database Exception - ';
             return $err . $e->getMessage();
         }
@@ -72,17 +73,13 @@ class SessionHandler implements SessionHandlerInterface
         try {
 
             if (empty($session_data)) {
-                $data = 'empty';
-            } else {
-                $data = $session_data;
+                $session_data = 'empty';
             }
 
             $sess_data = [
                 'session_id' => $session_id,
-                'session_data' => $data,
+                'session_data' => $session_data,
                 'deleted' => '0',
-                'created_at' => $this->model->now,
-                'updated_at' => $this->model->now
             ];
 
             $args = [
@@ -102,10 +99,15 @@ class SessionHandler implements SessionHandlerInterface
                 if ($old_sess['session_data'] == 'empty') {
                     // if session exists, destroy it
                     $this->destroy($session_id);
+
                     $result = $this->model->add($this->table, $sess_data);
+
+                    session_decode($session_data);
+
                     return true;
                 } else {
                     session_decode($old_sess['session_data']);
+
                     return TRUE;
                 }
             }
@@ -120,15 +122,30 @@ class SessionHandler implements SessionHandlerInterface
     public function destroy($session_id)
     {
         try {
-            $data = [
-                'deleted' => '1',
-                'updated_at' => $this->model->now
+
+            $args = [
+                'fields' => [
+                    'session_id' => $session_id
+                ]
             ];
 
-            $condition = [
-                'session_id' => $session_id
-            ];
-            $affected_rows = $this->model->updateByParams($this->table, $data, $condition);
+            $session = $this->model->getByParams($this->table, $args);
+
+            if (!empty($session)) {
+                $delete_data = [
+                    'session_id' => $session_id,
+                    'session_data' => $session['session_data'],
+                    'deleted_at' => $this->model->now
+                ];
+
+                $result = $this->model->add($this->old_sessions, $delete_data);
+    
+                $condition = [
+                    'session_id' => $session_id
+                ];
+                $affected_rows = $this->model->deleteByParams($this->table, $condition);
+            }
+            
             return true;
         } catch (Exception $e) {
             return FALSE;

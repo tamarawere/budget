@@ -86,6 +86,10 @@ switch ($routeInfo[0]) {
         session_set_save_handler($objSessionHandler, true);
         session_start();
 
+        if (!empty($_SESSION)) {
+            print_r($_SESSION); die;
+        } 
+
         if (!isset($routeInfo[1][2])) {
             // Route requires authentication
             $objController = $injector->make('Budget\Core\AppController');

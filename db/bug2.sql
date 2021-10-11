@@ -78,6 +78,17 @@ CREATE TABLE public.app_sessions (
     updated_at timestamp(0) with time zone DEFAULT NULL::timestamp with time zone
 );
 
+--
+-- Name: app_old_sessions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.app_old_sessions (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    session_id character varying(255) NOT NULL,
+    session_data text NOT NULL,
+    deleted_at timestamp(0) with time zone DEFAULT NULL::timestamp with time zone
+);
+
 
 --
 -- Name: app_transactions; Type: TABLE; Schema: public; Owner: -
@@ -127,48 +138,6 @@ CREATE TABLE public.app_users (
     created_at timestamp(0) with time zone DEFAULT NULL::timestamp with time zone,
     updated_at timestamp(0) with time zone DEFAULT NULL::timestamp with time zone
 );
-
-
---
--- Data for Name: app_categories; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.app_categories (id, category_name, category_desc, category_parent, status, created_by, created_at, updated_at) FROM stdin;
-\.
-
-
---
--- Data for Name: app_payment_modes; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.app_payment_modes (id, mode_name, mode_desc, status, user_id, created_at, updated_at) FROM stdin;
-\.
-
-
---
--- Data for Name: app_sessions; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.app_sessions (id, session_id, session_data, deleted, created_at, updated_at) FROM stdin;
-39591a1e-0c97-47bd-bac5-c05ce9ffdd28	sg933mgl4mt8vs3lriu6ogd9b0	empty	0	2021-10-05 05:29:41+03	2021-10-05 05:29:41+03
-5c9ab657-d8c1-40c3-9cd6-ba97702b9770	89j6tuof79t0vcbh7rnbh1sgsd	empty	0	2021-10-05 05:30:02+03	2021-10-05 05:30:02+03
-\.
-
-
---
--- Data for Name: app_transactions; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.app_transactions (id, category_id, item, payment_mode_id, total_cost, unit_cost, quantity, uom_id, user_id, created_at, updated_at) FROM stdin;
-\.
-
-
---
--- Data for Name: app_uom; Type: TABLE DATA; Schema: public; Owner: -
---
-
-COPY public.app_uom (id, uom_name, uom_desc, status, user_id, created_at, updated_at) FROM stdin;
-\.
 
 
 --

@@ -34,16 +34,12 @@ class AuthController
         try {
             $user_details = $this->model->signInUser($this->controller->getPostData());
 
-            //print_r($user_details); die;
-
             if (!isset($user_details) || $user_details === false) {
                 $data = ['error' => 'Wrong Username/Password'];
                 return $this->controller->setResponse('login', $data);
             }
             $this->setSession($user_details);
-
-            $data = [];
-
+            
             return $this->controller->setRedirect('');
         } catch (Exception $e) {
             $data = ['error' => 'Login Errors' . $e->getMessage()];
@@ -83,6 +79,7 @@ class AuthController
         $_SESSION["isLoggedIn"] = true;
         $_SESSION["username"] = $user_data['username'];
         $_SESSION["hostname"] = $GLOBALS['config']['host'];
+
         return;
     }
 

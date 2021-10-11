@@ -28,6 +28,8 @@ class AuthModel
             ];
             $user_details = $this->model->getByParams($this->table, $params);
 
+            
+
             if (password_verify($credentials['password'], $user_details['password'])) {
                 /* The password is correct. */
                 return $user_details;
