@@ -20,6 +20,7 @@ class SessionHandler implements SessionHandlerInterface
      * to save session data
      */
     private $table = 'app_sessions';
+    private $login_sessions = 'app_login_sessions';
     private $old_sessions = 'app_old_sessions';
 
     /**
@@ -50,6 +51,7 @@ class SessionHandler implements SessionHandlerInterface
     public function read($session_id)
     {
         try {
+            
             $args = [
                 'fields' => [
                     'session_id' => $session_id
@@ -72,10 +74,6 @@ class SessionHandler implements SessionHandlerInterface
     {
         try {
 
-            if (empty($session_data)) {
-                $session_data = 'empty';
-            }
-
             $sess_data = [
                 'session_id' => $session_id,
                 'session_data' => $session_data,
@@ -91,30 +89,43 @@ class SessionHandler implements SessionHandlerInterface
              */
             $old_sess = $this->model->getByParams($this->table, $args);
 
+            $sess_data['created_at'] = $this->model->now;
+            $sess_data['updated_at'] = $this->model->now;
+
+            print_r($old_sess); die;
+            
             /**
              * check if an old session exists
              */
             if (!empty($old_sess)) {
 
-                if ($old_sess['session_data'] == 'empty') {
+                if (empty($old_sess['session_data'])) {
                     // if session exists, destroy it
                     $this->destroy($session_id);
 
+                    // print_r(['empty_data'=>$sess_data]); die;
                     $result = $this->model->add($this->table, $sess_data);
 
                     session_decode($session_data);
-
+                    die('dies-1');
                     return true;
                 } else {
                     session_decode($old_sess['session_data']);
 
+                    // print_r(['full_data'=>$sess_data]); die;
+                    die('dies-2');
                     return TRUE;
                 }
             }
+
+            // print_r(['no_data'=>$sess_data]); die;
             $result = $this->model->add($this->table, $sess_data);
+
+            die('dies-3');
             return TRUE;
         } catch (Exception $e) {
             $err = 'Session Database Exception - ';
+
             throw new Exception($err . $e->getMessage() . ' - ' . $session_data);
         }
     }
@@ -139,13 +150,13 @@ class SessionHandler implements SessionHandlerInterface
                 ];
 
                 $result = $this->model->add($this->old_sessions, $delete_data);
-    
+
                 $condition = [
                     'session_id' => $session_id
                 ];
                 $affected_rows = $this->model->deleteByParams($this->table, $condition);
             }
-            
+
             return true;
         } catch (Exception $e) {
             return FALSE;

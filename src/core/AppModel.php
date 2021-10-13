@@ -30,7 +30,7 @@ class AppModel
         try {
             return DriverManager::getConnection($GLOBALS['config']['db']);
         } catch (\Exception $e) {
-            echo '<h3>Get Connection - Database Exception</h3><br><br>';
+            echo 'Get Connection - Database Exception';
             print_r($e->getMessage());
         }
     }
@@ -98,9 +98,11 @@ class AppModel
 
             foreach ($params['fields'] as $key => $value) {
 
+                
                 if ($value == null) {
 
                     $fields[] = $key . " IS NULL ";
+
                 } else {
 
                     $fields[] = $key . " = :" . $key;
@@ -121,13 +123,19 @@ class AppModel
                 $sql .= " LIMIT " . $params['limit'];
             }
 
+
+            
             $stmt = $this->db->prepare($sql);
 
             foreach ($params['fields'] as $key => $value) {
-                $stmt->bindValue($key, $value);
+
+                if (!(empty($value) && $value !== '0')) {
+                    $stmt->bindValue($key, $value);
+                }             
             }
 
             $result = $stmt->executeQuery()->fetchAllAssociative();
+
             if (isset($result)) {
                 if (count($result) > 1) {
                     return $result;
@@ -143,6 +151,8 @@ class AppModel
             return false;
         } catch (Exception $e) {
             $err = 'Unable to get items - Database Exception';
+
+            print_r(['the except' => $err . $e->getMessage()]); die;
             throw new Exception($err . $e->getMessage());
         }
     }

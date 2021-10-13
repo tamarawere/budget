@@ -82,6 +82,15 @@ CREATE TABLE public.app_sessions (
 -- Name: app_old_sessions; Type: TABLE; Schema: public; Owner: -
 --
 
+CREATE TABLE public.app_login_sessions (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    session_id character varying(255) NOT NULL,
+    session_data text NOT NULL,
+    deleted character varying(255) DEFAULT '0'::character varying NOT NULL,
+    created_at timestamp(0) with time zone DEFAULT NULL::timestamp with time zone,
+    updated_at timestamp(0) with time zone DEFAULT NULL::timestamp with time zone
+);
+
 CREATE TABLE public.app_old_sessions (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     session_id character varying(255) NOT NULL,
