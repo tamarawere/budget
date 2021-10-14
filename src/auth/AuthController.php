@@ -53,11 +53,6 @@ class AuthController
         try {
             $data = $this->controller->getPostData();
 
-            // $this->controller->validate($data, [
-            //     'current_password' => 'required',
-            //     'new_password' => 'required'
-            // ]);
-
             $this->model->changePassword($data, $this->controller->user_id);
 
             $data = [

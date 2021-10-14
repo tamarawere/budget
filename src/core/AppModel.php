@@ -122,8 +122,6 @@ class AppModel
             if (isset($params['limit'])) {
                 $sql .= " LIMIT " . $params['limit'];
             }
-
-
             
             $stmt = $this->db->prepare($sql);
 
