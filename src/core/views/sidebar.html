@@ -9,7 +9,7 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="index.html" aria-expanded="false">
+                            <a class="sidebar-link sidebar-link" href="dash" aria-expanded="false">
                                 <i data-feather="home" class="feather-icon"></i>
                                 <span class="hide-menu">
                                     Home Page
@@ -22,7 +22,7 @@
                         <li class="nav-small-cap"><span class="hide-menu">Dashboards</span></li>
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="ticket-list.html" aria-expanded="false">
+                            <a class="sidebar-link" href="main_dash" aria-expanded="false">
                                 <i data-feather="tag" class="feather-icon"></i>
                                 <span class="hide-menu">
                                     Main Dashboard
@@ -31,7 +31,7 @@
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="ticket-list.html" aria-expanded="false">
+                            <a class="sidebar-link" href="income_dash" aria-expanded="false">
                                 <i data-feather="tag" class="feather-icon"></i>
                                 <span class="hide-menu">
                                     Incomes Dashboard
@@ -40,7 +40,7 @@
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="app-chat.html" aria-expanded="false">
+                            <a class="sidebar-link sidebar-link" href="expense_dash" aria-expanded="false">
                                 <i data-feather="message-square" class="feather-icon"></i>
                                 <span class="hide-menu">
                                     Expenses Dashboard
@@ -49,7 +49,7 @@
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="app-calendar.html" aria-expanded="false">
+                            <a class="sidebar-link sidebar-link" href="invest_dash" aria-expanded="false">
                                 <i data-feather="calendar" class="feather-icon"></i>
                                 <span class="hide-menu">
                                     Investments Dashboard
@@ -163,23 +163,65 @@
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="authentication-login1.html"
+                            <a class="sidebar-link sidebar-link" href="{{categories}}"
                                 aria-expanded="false">
                                 <i data-feather="lock" class="feather-icon"></i>
                                 <span class="hide-menu">
-                                    Categories Management
+                                    Categories Home
                                 </span>
                             </a>
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="authentication-login1.html"
-                                aria-expanded="false">
-                                <i data-feather="lock" class="feather-icon"></i>
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <i data-feather="file-text" class="feather-icon"></i>
                                 <span class="hide-menu">
-                                    Categories List
+                                    Categories Management
                                 </span>
                             </a>
+
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item">
+                                    <a href="{{categories}}add" class="sidebar-link">
+                                        <span class="hide-menu">
+                                            Add New Category
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="form-input-grid.html" class="sidebar-link">
+                                        <span class="hide-menu">
+                                            Search Categories
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <i data-feather="grid" class="feather-icon"></i>
+                                <span class="hide-menu">
+                                    Categories Reports
+                                </span>
+                            </a>
+
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item">
+                                    <a href="table-basic.html" class="sidebar-link">
+                                        <span class="hide-menu">
+                                            Highest Cost Categories
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="table-dark-basic.html" class="sidebar-link">
+                                        <span class="hide-menu">
+                                            Most Active Categories
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
 

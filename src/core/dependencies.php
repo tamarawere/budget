@@ -46,7 +46,12 @@ $injector->delegate('Twig\Environment', function () use ($injector) {
             $twig->addGlobal($module, $GLOBALS['config']['base_path'] . $module . '/');
         }
 
-        $twig->addGlobal('base_path', $GLOBALS['config']['base_path']);
+        $base = $GLOBALS['config']['base_path'];
+
+        $twig->addGlobal('base_path', $base);
+
+        $twig->addGlobal('cat_path', $base.'categories/');
+        
         $twig->addGlobal('template', $GLOBALS['config']['twig']['template']);
         $twig->addGlobal('css', $GLOBALS['config']['twig']['css']);
         $twig->addGlobal('js', $GLOBALS['config']['twig']['js']);

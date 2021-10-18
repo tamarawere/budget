@@ -14,6 +14,8 @@ $itemGroupController = 'Budget\ItemGroups\ItemGroupsController';
 $itemController = 'Budget\Items\ItemsController';
 $homeController = 'Budget\Home\HomeController';
 
+$uuidRegex = '[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}';
+
 return [
     // AUTHENTICATION API
     ['GET', 'login', [$authController, 'showLoginPage',1]],
@@ -23,12 +25,13 @@ return [
     ['POST', 'change_pass', [$authController, 'changePassword']],
     
     // CATEGORIES API
-    ['GET', 'categories', [$catController, 'index',1]],
+    ['GET', 'categories', [$catController, 'showCategoryHomePage',1]],
     ['GET', 'categories/all', [$catController, 'getAllCategories']],
-    ['GET', 'categories/{id}', [$catController, 'getCategoryById']],
+    ['GET', 'categories/{catId:'.$uuidRegex.'}', [$catController, 'showEditCategoryPage']],
+    ['GET', 'categories/add', [$catController, 'showAddCategoryPage']],
     ['POST', 'categories/add', [$catController, 'addCategory']],
-    ['POST', 'categories/update/{id}', [$catController, 'updateCategory']],
-    ['POST', 'categories/delete/{id}', [$catController, 'deleteCategory']],
+    ['PUT', 'categories/{catId:'.$uuidRegex.'}', [$catController, 'updateCategory']],
+    ['DELETE', 'categories/{catId:'.$uuidRegex.'}', [$catController, 'deleteCategory']],
 
     // UNITS OF MEASURE API
     ['GET', 'uom', [$uomController, 'getAllUoms']],
@@ -75,5 +78,11 @@ return [
 
     ['GET', 'places', ['Budget\Categories\PlacesController', 'index']],
 
+    // DASHBORD API
     ['GET', '', [$homeController, 'index']],
+    ['GET', 'dash', [$homeController, 'showMainDash']],
+    ['GET', 'main_dash', [$homeController, 'showMainDash']],
+    ['GET', 'income_dash', [$homeController, 'showIncomesDash']],
+    ['GET', 'expense_dash', [$homeController, 'showExpensesDash']],
+    ['GET', 'invest_dash', [$homeController, 'showInvestmentsDash']],
 ];

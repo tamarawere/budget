@@ -18,7 +18,8 @@
         "narrowspark/http-emitter": "^1.0",
         "doctrine/dbal": "^3.0",
         "twig/twig": "^3.3",
-        "rdlowrey/auryn": "^1.4"
+        "rdlowrey/auryn": "^1.4",
+        "ramsey/uuid": "^4.2"
     },
     "autoload": {
         "psr-4": {

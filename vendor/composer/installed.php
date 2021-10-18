@@ -6,11 +6,20 @@
     'aliases' => 
     array (
     ),
-    'reference' => '682f98ae6be0a2878273553499603829cd41a64d',
+    'reference' => '86d6430e14af0b5aef7508ef786fc8b34a84985d',
     'name' => 'oa/budget',
   ),
   'versions' => 
   array (
+    'brick/math' => 
+    array (
+      'pretty_version' => '0.9.3',
+      'version' => '0.9.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'ca57d18f028f84f777b2168cd1911b0dee2343ae',
+    ),
     'composer/package-versions-deprecated' => 
     array (
       'pretty_version' => '1.11.99.4',
@@ -99,7 +108,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '682f98ae6be0a2878273553499603829cd41a64d',
+      'reference' => '86d6430e14af0b5aef7508ef786fc8b34a84985d',
     ),
     'ocramius/package-versions' => 
     array (
@@ -143,6 +152,24 @@
       ),
       'reference' => '120b605dfeb996808c31b6477290a714d356e822',
     ),
+    'ramsey/collection' => 
+    array (
+      'pretty_version' => '1.2.2',
+      'version' => '1.2.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'cccc74ee5e328031b15640b51056ee8d3bb66c0a',
+    ),
+    'ramsey/uuid' => 
+    array (
+      'pretty_version' => '4.2.3',
+      'version' => '4.2.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'fc9bb7fb5388691fd7373cd44dcb4d63bbcf24df',
+    ),
     'rdlowrey/auryn' => 
     array (
       'pretty_version' => 'v1.4.4',
@@ -151,6 +178,13 @@
       array (
       ),
       'reference' => 'dae57592229d313b59414a2c8334e61e6eb00928',
+    ),
+    'rhumsaa/uuid' => 
+    array (
+      'replaced' => 
+      array (
+        0 => '4.2.3',
+      ),
     ),
     'symfony/polyfill-ctype' => 
     array (
@@ -169,6 +203,24 @@
       array (
       ),
       'reference' => '9174a3d80210dca8daa7f31fec659150bbeabfc6',
+    ),
+    'symfony/polyfill-php80' => 
+    array (
+      'pretty_version' => 'v1.23.1',
+      'version' => '1.23.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '1100343ed1a92e3a38f9ae122fc0eb21602547be',
+    ),
+    'symfony/polyfill-php81' => 
+    array (
+      'pretty_version' => 'v1.23.0',
+      'version' => '1.23.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'e66119f3de95efc359483f810c4c3e6436279436',
     ),
     'twig/twig' => 
     array (

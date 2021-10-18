@@ -28,22 +28,97 @@ class CategoriesController
             die($e->getMessage());
         }
     }
+
+
+    /**
+     * ==========================================================================
+     * -------------SHOW PAGES FUNCTIONS
+     * ==========================================================================
+     */
+
+    public function showCategoryHomePage()
+    {
+        try {
+            $data = [
+                'header' => 'Category DashBoard',
+            ];
+            return $this->controller->setResponse('cat_home', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function showAllCategoriesPage()
+    {
+        try {
+            $data = [
+                'header' => 'Category DashBoard',
+            ];
+            return $this->controller->setResponse('all_cats', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function showAddCategoryPage()
+    {
+        try {
+            $data = [
+                'header' => 'Category DashBoard',
+                'catList' => $this->getAllCategories()
+            ];
+            return $this->controller->setResponse('add_cat', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function showEditCategoryPage($id)
+    {
+        try {
+            $data = [
+                'catDetails' => $this->getCategoryById($id),
+                'catList' => $this->getAllCategories(),
+                'header' => 'WanHeda'
+            ];
+
+            return $this->controller->setResponse('edit_cat', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function showCategoryDetailsPage()
+    {
+        try {
+            $data = [
+                'header' => 'Category DashBoard',
+            ];
+            return $this->controller->setResponse('edit_cat', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    /**
+     * ==========================================================================
+     * -------------ADD DATA FUNCTION
+     * ==========================================================================
+     */
     public function addCategory()
     {
-        if (empty($this->appRequest->getParsedBody())) {
-            $categoryDetails = json_decode(file_get_contents("php://input"));
-        } else {
-            $categoryDetails = $this->appRequest->getParsedBody();
-        }
+        
+        $catDetails = $this->controller->getPostData();
 
-        if (!empty($categoryDetails)) {
+        if (!empty($catDetails)) {
+
             try {
-                $this->categoriesModel->addCategory((array)$categoryDetails);
-                $this->responseBody->write('everything ok');
-                return $this->appResponse->withBody($this->responseBody);
-            } catch (\Exception $e) {
-                $this->responseBody->write($e->getMessage());
-                return $this->appResponse->withBody($this->responseBody);
+                
+                $result = $this->model->addCategory($catDetails);
+                
+                return $this->controller->setRedirect('categories/'.$result['category_id']);
+            } catch (Exception $e) {
+                die($e->getMessage());
             }
         } else {
             $this->responseBody->write('have to write somethin');
@@ -56,24 +131,21 @@ class CategoriesController
 
     public function getAllCategories()
     {
-        $categories = $this->categoriesModel->getAllCategories();
-
-        $catArray = [];
-        foreach ($categories as $cat) {
-            array_push($catArray, $cat);
+        try {
+            return $this->model->getAllCategories();
+        } catch (Exception $e) {
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
         }
-        $result = json_encode($catArray);
-        $this->responseBody->write($result);
-
-        return $this->appResponse->withBody($this->responseBody);
     }
 
     public function getCategoryById(array $id)
     {
-        $category = $this->categoriesModel->getCategoryById($id['id']);
-        $result = json_encode($category);
-        $this->responseBody->write($result);
-        return $this->appResponse->withBody($this->responseBody);
+        try {
+            return $this->model->getCategoryById($id['catId']);
+        } catch (Exception $e) {
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
+        }
+        
     }
 
     /**

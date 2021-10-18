@@ -87,7 +87,7 @@ class AppModel
         }
     }
 
-    public function getByParams(string $table, array $params)
+    public function getByParams(string $table, array $params = [])
     {
         try {
 
@@ -96,20 +96,23 @@ class AppModel
 
             $sql = "SELECT $attributes FROM " . $table;
 
-            foreach ($params['fields'] as $key => $value) {
+            if (isset($params['fields']) && !empty($params['fields'])) {
+                foreach ($params['fields'] as $key => $value) {
 
-                
-                if ($value == null) {
+                    if ($value == null) {
 
-                    $fields[] = $key . " IS NULL ";
+                        $fields[] = $key . " IS NULL ";
+                    } else {
 
-                } else {
-
-                    $fields[] = $key . " = :" . $key;
+                        $fields[] = $key . " = :" . $key;
+                    }
                 }
             }
 
-            if (!empty($fields)) {
+
+
+
+            if (isset($fields) && !empty($fields)) {
                 $sql .= " WHERE " . implode(" AND ", $fields);
             }
 
@@ -122,15 +125,18 @@ class AppModel
             if (isset($params['limit'])) {
                 $sql .= " LIMIT " . $params['limit'];
             }
-            
+
             $stmt = $this->db->prepare($sql);
 
-            foreach ($params['fields'] as $key => $value) {
+            if (isset($fields) && !empty($fields)) {
+                foreach ($params['fields'] as $key => $value) {
 
-                if (!(empty($value) && $value !== '0')) {
-                    $stmt->bindValue($key, $value);
-                }             
+                    if (!(empty($value) && $value !== '0')) {
+                        $stmt->bindValue($key, $value);
+                    }
+                }
             }
+
 
             $result = $stmt->executeQuery()->fetchAllAssociative();
 
@@ -150,7 +156,8 @@ class AppModel
         } catch (Exception $e) {
             $err = 'Unable to get items - Database Exception';
 
-            print_r(['the except' => $err . $e->getMessage()]); die;
+            print_r(['the except' => $err . $e->getMessage()]);
+            die;
             throw new Exception($err . $e->getMessage());
         }
     }
@@ -189,6 +196,11 @@ class AppModel
             $err = '<h3>Unable to get items - Database Exception</h3>';
             throw new Exception($err . $e->getMessage());
         }
+    }
+
+    public function getUuid()
+    {
+        # code...
     }
 
     public function prepareLoggerData($data, $fields)

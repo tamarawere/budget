@@ -30,9 +30,37 @@ class HomeController
         return $this->controller->setResponse('dash', $data);
     }
 
-    public function addCategory()
+    public function showMainDash()
     {
-        
+        $data = [
+            'name' => 'the namess',
+        ];
+        return $this->controller->setResponse('main_dash', $data);
     }
+
+    public function showIncomesDash()
+    {
+        $data = [
+            'name' => 'the namess',
+        ];
+        return $this->controller->setResponse('income_dash', $data);
+    }
+
+    public function showExpensesDash()
+    {
+        $data = [
+            'name' => 'the namess',
+        ];
+        return $this->controller->setResponse('expense_dash', $data);
+    }
+
+    public function showInvestmentsDash()
+    {
+        $data = [
+            'name' => 'the namess',
+        ];
+        return $this->controller->setResponse('invest_dash', $data);
+    }
+
 
 }

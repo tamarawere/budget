@@ -19,6 +19,11 @@ error_reporting(E_ALL);
 
 $environment = 'development';
 
+/**
+ * Get function where error is raised
+ */
+$err = 'Database Exception - ' . __FUNCTION__ . ' - ';
+
 $request = ServerRequest::fromGlobals();
 
 $injector = new Injector();
@@ -62,10 +67,11 @@ $dispatcher = simpleDispatcher($routeDefinitionCallback);
 
 $routeInfo = $dispatcher->dispatch($request->getMethod(), $path);
 
+
 switch ($routeInfo[0]) {
     case Dispatcher::NOT_FOUND:
 
-        print_r(['Not Found' => $path]);
+        print_r(['Route Not Found' => $path]);
         die;
         $response = new Response();
         $response->getBody()->write('route not found');
@@ -81,16 +87,17 @@ switch ($routeInfo[0]) {
         $className = $routeInfo[1][0];
         $method = $routeInfo[1][1];
         $vars = $routeInfo[2];
+        
 
         $objSessionHandler = $injector->make('Budget\Core\SessionHandler');
         session_set_save_handler($objSessionHandler, true);
         session_start();
 
-        if (!isset($routeInfo[1][2])) {
+        if (isset($routeInfo[1][2])) {
             // Route requires authentication
             $objController = $injector->make('Budget\Core\AppController');
 
-            if ($objController->checkLogin() == false) {
+            if ($objController->checkLogin() !== false) {
                 $response = $objController->setRedirect('login');
                 $emitter->emit($response);
                 exit;
@@ -103,7 +110,7 @@ switch ($routeInfo[0]) {
         $class = $injector->make($className);
         $response = $class->$method($vars);
         break;
-}
 
+}
 
 $emitter->emit($response);

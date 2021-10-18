@@ -20,7 +20,7 @@ return [
         'dbname' => 'bug',
         'user' => 'bug',
         'password' => '123',
-        'host' => '9.9.9.4',
+        'host' => '192.168.100.60',
         'port' => '5432',
         'driver' => 'pdo_pgsql',
     ],

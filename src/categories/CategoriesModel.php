@@ -7,56 +7,80 @@ namespace Budget\Categories;
 use Budget\Core\AppModel;
 use DateTime;
 use Exception;
+use Ramsey\Uuid\Nonstandard\Uuid;
 
 class CategoriesModel extends AppModel
 {
-    private $table = 'app_categories';
-    private $id = 'category_id';
+    private $catTbl = 'app_categories';
+    private $model;
+
+    public function __construct(AppModel $model)
+    {
+        $this->model = $model;
+    }
 
     public function getAllCategories()
     {
         try {
-            $sql = 'SELECT * FROM ' . $this->table;
-            $allCategories = $this->db->fetchAllAssociative($sql);
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to get all Categories - Database Exception</h3>';
-            throw new Exception($err . $e->getMessage());
+            $result = $this->model->getByParams($this->catTbl);
+
+            if ($result !== false) {
+                if (isset($result['category_id'])) {
+                    return [$result];
+                }
+                return $result;
+            }
+        } catch (Exception $e) {
+            return $GLOBALS['err'] . $e->getMessage();
         }
-        return $allCategories;
     }
 
     public function getCategoryById(string $id)
     {
         try {
-            $sql = "SELECT * FROM " . $this->table . " WHERE " . $this->id . " = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(1, $id);
-            return $stmt->execute()->fetchAllAssociative();
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to get Category - Database Exception</h3>';
-            throw new Exception($err . $e->getMessage());
+
+            $args = [
+                'fields' => [
+                    'category_id' => $id
+                ]
+            ];
+
+            $result = $this->model->getByParams($this->catTbl, $args);
+
+            if ($result !== false) {
+                return $result;
+            }
+        } catch (Exception $e) {
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
         }
     }
 
     public function addCategory(array $category)
     {
         try {
-            // get user id for admin as default user
-            $sql = "SELECT user_id FROM app_users WHERE user_name LIKE '%Admin%'";
-            $result = $this->db->fetchAllAssociative($sql);
 
-            $this->db->insert(
-                $this->table,
-                array(
-                    'category_name' => $category['category_name'],
-                    'category_desc' => $category['category_desc'],
-                    'created_by' => $result[0]['user_id'],
-                    'updated_by' => $result[0]['user_id']
-                )
-            );
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to Add Category - Database Exception</h3><br><br>';
-            return $err . $e->getMessage();
+            $newCat = [
+                'category_id' => Uuid::uuid4(),
+                'category_name' => $category['catName'],
+                'category_desc' => $category['catDesc'],
+                'category_parent' => $category['catParent'],
+                'status' => $category['catStatus'],
+                'created_by' => '7d669076-d175-4d16-a11c-42224167b9a6',
+                'created_at' => $this->model->now,
+                'updated_at' => $this->model->now,
+            ];
+
+            $result = $this->model->add($this->catTbl, $newCat);
+
+            if ($result == 1) {
+                return $newCat;
+            } else {
+                die('somethings funny');
+            }
+        } catch (Exception $e) {
+
+            die($GLOBALS['err'] . $e->getMessage());
+            return $GLOBALS['err'] . $e->getMessage();
         }
     }
 
