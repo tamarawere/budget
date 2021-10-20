@@ -1,80 +1,10 @@
-{% extends "base.html" %}
+{% extends "cat_base.html" %}
 
-{% block content %}
-<!-- ============================================================== -->
-<!-- Page wrapper  -->
-<!-- ============================================================== -->
-<div class="page-wrapper">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <div class="page-breadcrumb">
-        <div class="row">
-            <div class="col-7 align-self-center">
-                <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">{{ header }}</h3>
-                <div class="d-flex align-items-center">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb m-0 p-0">
-                            <li class="breadcrumb-item"><a href="index.html">CATEGORIES</a>
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
+{% block cat_content %}
+<div class="row">
+    <div class="col-12">
+        
     </div>
-    <!-- ============================================================== -->
-    <!-- End Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Container fluid  -->
-    <!-- ============================================================== -->
-    <div class="container-fluid">
-
-        {% block cat_stats %}
-        <!-- *************************************************************** -->
-        <!-- Start Category Statistics Cards -->
-        <!-- *************************************************************** -->
-
-        <!-- *************************************************************** -->
-        <!-- End Category Statistics Cards -->
-        <!-- *************************************************************** -->
-        {% endblock cat_stats %}
-
-        {% block cat_charts %}
-        <!-- *************************************************************** -->
-        <!-- Start Categories Charts Section -->
-        <!-- *************************************************************** -->
-
-        <!-- *************************************************************** -->
-        <!-- End Categories Charts Section -->
-        <!-- *************************************************************** -->
-        {% endblock cat_charts %}
-
-        {% block cat_content %}
-
-        {% endblock cat_content %}
-
-
-        {% block top_spending_categories %}
-
-        {% endblock top_spending_categories %}
-
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Container fluid  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <footer class="footer text-center text-muted">
-        All Rights Reserved by Adminmart. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
-    </footer>
-    <!-- ============================================================== -->
-    <!-- End footer -->
-    <!-- ============================================================== -->
 </div>
-<!-- ============================================================== -->
-<!-- End Page wrapper  -->
-<!-- ============================================================== -->
-{% endblock content %}
+</div>
+{% endblock cat_content %}

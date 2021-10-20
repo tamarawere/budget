@@ -26,7 +26,7 @@ return [
     
     // CATEGORIES API
     ['GET', 'categories', [$catController, 'showCategoryHomePage',1]],
-    ['GET', 'categories/all', [$catController, 'getAllCategories']],
+    ['GET', 'categories/all', [$catController, 'showAllCategoriesPage']],
     ['GET', 'categories/{catId:'.$uuidRegex.'}', [$catController, 'showEditCategoryPage']],
     ['GET', 'categories/add', [$catController, 'showAddCategoryPage']],
     ['POST', 'categories/add', [$catController, 'addCategory']],

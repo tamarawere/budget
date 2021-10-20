@@ -22,11 +22,26 @@
 }
 
 .page-wrapper {
-	background: #fdfdfd;
+  background: #fdfdfd;
 }
 
 .form-control,
 .custom-select {
-    border: 2px solid #d6dee6;
-    border-radius: 4px;
+  border: 2px solid #d6dee6;
+  border-radius: 4px;
 }
+
+table > thead > tr > th {
+  text-transform: uppercase;
+}
+
+.sidebar-nav #sidebarnav .sidebar-item .sidebar-link {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.sidebar-nav #sidebarnav .sidebar-item .first-level .sidebar-item .sidebar-link {
+	padding-top: 5px;
+  padding-bottom: 5px;
+}
+

@@ -52,9 +52,11 @@ class CategoriesController
     {
         try {
             $data = [
-                'header' => 'Category DashBoard',
+                'header' => 'Categories - All Categories',
+                'catList' => $this->getAllCategories()
             ];
-            return $this->controller->setResponse('all_cats', $data);
+
+            return $this->controller->setResponse('cat_all', $data);
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -64,7 +66,7 @@ class CategoriesController
     {
         try {
             $data = [
-                'header' => 'Category DashBoard',
+                'header' => 'Categories - Add New Category',
                 'catList' => $this->getAllCategories()
             ];
             return $this->controller->setResponse('add_cat', $data);
@@ -79,7 +81,7 @@ class CategoriesController
             $data = [
                 'catDetails' => $this->getCategoryById($id),
                 'catList' => $this->getAllCategories(),
-                'header' => 'WanHeda'
+                'header' => 'Categories - Edit Category'
             ];
 
             return $this->controller->setResponse('edit_cat', $data);

@@ -22,13 +22,32 @@ class CategoriesModel extends AppModel
     public function getAllCategories()
     {
         try {
-            $result = $this->model->getByParams($this->catTbl);
 
-            if ($result !== false) {
-                if (isset($result['category_id'])) {
-                    return [$result];
+            $data = [];
+
+            $results = $this->model->getByParams($this->catTbl);
+
+
+            if ($results !== false) {
+                if (isset($results['category_id'])) {
+                    if (!is_null($results['category_parent']) || !empty($results['category_parent'])) {
+                        $results['parent'] = $this->getCategoryById($results['category_parent']);
+                    } else {
+                        $results['parent'] = '';
+                    }
+                    return [$results];
+                } else {
+
+                    foreach ($results as $result) {
+                        if (!is_null($result['category_parent']) || !empty($result['category_parent'])) {
+                            $result['parent'] = $this->getCategoryById($result['category_parent']);
+                        } else {
+                            $result['parent'] = '';
+                        }
+                        $data[] = $result;
+                    }
                 }
-                return $result;
+                return $data;
             }
         } catch (Exception $e) {
             return $GLOBALS['err'] . $e->getMessage();
