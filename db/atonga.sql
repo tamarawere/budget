@@ -63,6 +63,64 @@ CREATE TABLE IF NOT EXISTS "app_uom" (
 		  		REFERENCES app_users(id)
 );
 
+CREATE TABLE IF NOT EXISTS app_items (
+	"item_id" UUID DEFAULT uuid_generate_v4(),
+	"item_name" VARCHAR ( 255 ) UNIQUE NOT NULL,
+	"item_category" UUID NOT NULL,
+	"item_desc" VARCHAR ( 255 ) NULL,
+	"item_uom" UUID NOT NULL,
+	"created_on" TIMESTAMP NOT NULL,
+	"created_by" UUID NOT NULL,
+	"updated_on" TIMESTAMP NOT NULL,
+	"updated_by" UUID NOT NULL,
+	PRIMARY KEY ("item_id"),
+	CONSTRAINT fk_category
+		FOREIGN KEY(item_category) 
+			REFERENCES app_categories(category_id)
+				ON DELETE CASCADE,
+	CONSTRAINT fk_uom
+		FOREIGN KEY(item_uom) 
+			REFERENCES app_uom(uom_id)
+				ON DELETE CASCADE,
+	CONSTRAINT fk_create
+		FOREIGN KEY(created_by) 
+			REFERENCES app_users(user_id)
+				ON DELETE CASCADE,
+	CONSTRAINT fk_update
+		FOREIGN KEY(updated_by) 
+			REFERENCES app_users(user_id)
+				ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS app_services (
+	"item_id" UUID DEFAULT uuid_generate_v4(),
+	"item_name" VARCHAR ( 255 ) UNIQUE NOT NULL,
+	"item_category" UUID NOT NULL,
+	"item_desc" VARCHAR ( 255 ) NULL,
+	"item_uom" UUID NOT NULL,
+	"created_on" TIMESTAMP NOT NULL,
+	"created_by" UUID NOT NULL,
+	"updated_on" TIMESTAMP NOT NULL,
+	"updated_by" UUID NOT NULL,
+	PRIMARY KEY ("item_id"),
+	CONSTRAINT fk_category
+		FOREIGN KEY(item_category) 
+			REFERENCES app_categories(category_id)
+				ON DELETE CASCADE,
+	CONSTRAINT fk_uom
+		FOREIGN KEY(item_uom) 
+			REFERENCES app_uom(uom_id)
+				ON DELETE CASCADE,
+	CONSTRAINT fk_create
+		FOREIGN KEY(created_by) 
+			REFERENCES app_users(user_id)
+				ON DELETE CASCADE,
+	CONSTRAINT fk_update
+		FOREIGN KEY(updated_by) 
+			REFERENCES app_users(user_id)
+				ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS "app_transactions" (
 	"id" UUID NOT NULL DEFAULT uuid_generate_v4(),
 	"category_id" UUID NOT NULL,

@@ -104,7 +104,32 @@ class CategoriesController
 
     /**
      * ==========================================================================
-     * -------------ADD DATA FUNCTION
+     * -------------GET DATA FUNCTIONS
+     * ==========================================================================
+     */
+    public function getAllCategories()
+    {
+        try {
+            return $this->model->getAllCategories();
+        } catch (Exception $e) {
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
+        }
+    }
+
+    public function getCategoryById(array $id)
+    {
+        try {
+            return $this->model->getCategoryById($id['catId']);
+        } catch (Exception $e) {
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
+        }
+        
+    }
+
+
+    /**
+     * ==========================================================================
+     * -------------ADD DATA FUNCTIONS
      * ==========================================================================
      */
     public function addCategory()
@@ -131,62 +156,45 @@ class CategoriesController
         }
     }
 
-    public function getAllCategories()
-    {
-        try {
-            return $this->model->getAllCategories();
-        } catch (Exception $e) {
-            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
-        }
-    }
 
-    public function getCategoryById(array $id)
-    {
-        try {
-            return $this->model->getCategoryById($id['catId']);
-        } catch (Exception $e) {
-            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
-        }
-        
-    }
-
+    /**
+     * ==========================================================================
+     * -------------UPDATE DATA FUNCTIONS
+     * ==========================================================================
+     */
     /**
      * Update Details About A Category.
      * Uses the ID to fetch
      */
     public function updateCategory(array $id)
     {
-        if (empty($this->appRequest->getParsedBody())) {
-            $categoryDetails = json_decode(file_get_contents("php://input"));
-        } else {
-            $categoryDetails = $this->appRequest->getParsedBody();
-        }
-        // print_r($categoryDetails->category_name);
-
-        $category['category_name'] = $categoryDetails->category_name;
-        $category['category_desc'] = $categoryDetails->category_desc;
-
         try {
-            $category['category_id'] = $id['id'];
-            $this->categoriesModel->updateCategory($category);
-            $this->responseBody->write('category updated successfully');
-            return $this->appResponse->withBody($this->responseBody);
-        } catch (\Exception $e) {
-            $this->responseBody->write($e->getMessage());
-            return $this->appResponse
-                ->withBody($this->responseBody)
-                ->withHeader('Content-Type', 'text/plain')
-                ->withStatus(400, 'DATABASE EXCEPTION');
+            $updateData = $this->controller->getPostData();
+
+            $result = $this->model->updateCategory($updateData, $id['catId']);
+            
+            if ($result !== false) {
+                return $this->controller->setRedirect('categories/'.$result['category_id']);
+            } else {
+                die('Category Not Updated');
+            }
+            
+        } catch (Exception $e) {
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
         }
     }
 
     public function deleteCategory(array $id)
     {
         try {
-            $this->categoriesModel->deleteCategory($id['id']);
-            $this->responseBody->write('category deleted successfully');
-            return $this->appResponse->withBody($this->responseBody);
-        } catch (\Exception $e) {
+            $result = $this->model->deleteCategory($id['catId']);
+
+            if ($result !== false) {
+                return $this->controller->setRedirect('/categories');
+            } else {
+                die('Category Not Updated');
+            }
+        } catch (Exception $e) {
             $this->responseBody->write($e->getMessage());
             return $this->appResponse->withBody($this->responseBody);
         }

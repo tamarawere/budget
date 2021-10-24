@@ -30,7 +30,7 @@ return [
     ['GET', 'categories/{catId:'.$uuidRegex.'}', [$catController, 'showEditCategoryPage']],
     ['GET', 'categories/add', [$catController, 'showAddCategoryPage']],
     ['POST', 'categories/add', [$catController, 'addCategory']],
-    ['PUT', 'categories/{catId:'.$uuidRegex.'}', [$catController, 'updateCategory']],
+    ['POST', 'categories/{catId:'.$uuidRegex.'}', [$catController, 'updateCategory']],
     ['DELETE', 'categories/{catId:'.$uuidRegex.'}', [$catController, 'deleteCategory']],
 
     // UNITS OF MEASURE API

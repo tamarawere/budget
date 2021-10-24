@@ -43,7 +43,7 @@ return [
     'twig' => [
         'template' => '/apps/budget/be/php/v2/web/assets/template/files/',
         'css' => '/apps/budget/be/php/v2/web/assets/css/',
-        'js' => '',
-        'img' => '',
+        'js' => '/apps/budget/be/php/v2/web/assets/js/',
+        'img' => '/apps/budget/be/php/v2/web/assets/img/',
     ]
 ];

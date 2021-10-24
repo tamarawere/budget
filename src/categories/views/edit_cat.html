@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title">Add New Category</h3>
-                <form action="{{cat_path}}add" method="POST">
+                <form action="{{catPath}}{{catDetails.category_id}}" method="POST">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-4">
@@ -26,8 +26,9 @@
                                                 Select Parent Category
                                             </label>
                                         </div>
-                                        <select name="catParent" class="custom-select" id="catParent">
+                                        <select name="catParent" class="custom-select" id="catParent" required>
                                             <option>--- Select Parent Category ---</option>
+                                            <option value="">None</option>
 
                                             {% if catList is defined and catList is not null %}
                                             {% for cat in catList %}
@@ -57,9 +58,7 @@
                                 <div class="form-group">
                                     <h4 class="card-title">Category Description</h4>
                                     <textarea name="catDesc" class="form-control" rows="3"
-                                        placeholder="Add Description...">
-                                        {{ catDetails.category_desc }}
-                                    </textarea>
+                                        placeholder="Add Description...">{{ catDetails.category_desc }}</textarea>
                                     <small id="textHelp" class="form-text text-muted">
                                         Add a short description for this category (optional)
                                     </small>
@@ -77,7 +76,7 @@
 
                                             {% if catDetails.status == 1 %}
                                             <input type="radio" class="custom-control-input" id="catStatusActive"
-                                                name="catStatus" checked>
+                                                name="catStatus" >
                                             {% else %}
                                             <input type="radio" class="custom-control-input" id="catStatusActive"
                                                 name="catStatus">

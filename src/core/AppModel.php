@@ -32,6 +32,7 @@ class AppModel
         } catch (\Exception $e) {
             echo 'Get Connection - Database Exception';
             print_r($e->getMessage());
+            die('raised');
         }
     }
 
@@ -79,8 +80,7 @@ class AppModel
     public function deleteByParams(string $table, $conditions): int
     {
         try {
-            $affected_rows = $this->db->delete($table, $conditions);
-            return $affected_rows;
+            return $this->db->delete($table, $conditions);
         } catch (Exception $e) {
             $err = 'Unable to Delete Item - Database Exception - ';
             throw new Exception($err . $e->getMessage());

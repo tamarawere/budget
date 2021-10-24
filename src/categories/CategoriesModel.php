@@ -82,7 +82,7 @@ class CategoriesModel extends AppModel
                 'category_id' => Uuid::uuid4(),
                 'category_name' => $category['catName'],
                 'category_desc' => $category['catDesc'],
-                'category_parent' => $category['catParent'],
+                'category_parent' => empty($category['catParent'])? null: $category['catParent'],
                 'status' => $category['catStatus'],
                 'created_by' => '7d669076-d175-4d16-a11c-42224167b9a6',
                 'created_at' => $this->model->now,
@@ -99,34 +99,54 @@ class CategoriesModel extends AppModel
         } catch (Exception $e) {
 
             die($GLOBALS['err'] . $e->getMessage());
-            return $GLOBALS['err'] . $e->getMessage();
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
         }
     }
 
-    public function updateCategory(array $category)
+    public function updateCategory(array $category, $catId)
     {
-        $update = new DateTime('now');
-        $updated_at = $update->format('Y-m-d H:i:s.u P');
         try {
-            $this->db->update(
-                $this->table,
-                array(
-                    'category_name' => $category['category_name'],
-                    'category_desc' => $category['category_desc'],
-                    'updated_at' => $updated_at,
-                ),
-                array($this->id => $category[$this->id])
-            );
+            $updateCat = [
+                'category_name' => $category['catName'],
+                'category_desc' => $category['catDesc'],
+                'category_parent' => empty($category['catParent'])? null: $category['catParent'],
+                'status' => $category['catStatus'],
+                'created_by' => '7d669076-d175-4d16-a11c-42224167b9a6',
+                'created_at' => $this->model->now,
+                'updated_at' => $this->model->now,
+            ];
+
+            $condition = [
+                'category_id' => $catId
+            ];
+
+            $result = $this->model->updateByParams($this->catTbl, $updateCat, $condition);
+
+            if (is_int($result)) {
+                return $this->getCategoryById($catId);
+            }
+            return false;
         } catch (\Exception $e) {
-            $err = '<h3>Unable to Update Category - Database Exception</h3>';
-            throw new Exception($err . $e->getMessage());
+            die($GLOBALS['err'] . $e->getMessage());
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
         }
     }
 
-    public function deleteCategory(string $id)
+    public function deleteCategory(string $catId)
     {
         try {
-            $this->db->delete($this->table, array($this->id => $id));
+            $catDetails = $this->getCategoryById($catId);
+
+            $condition = [
+                'category_id' => $catId
+            ];
+            $result = $this->model->deleteByParams($this->catTbl, $condition);
+
+            if (is_int($result)) {
+                return $catDetails;
+            }
+            return false;
+            
         } catch (\Exception $e) {
             $err = '<h3>Unable to Delete Category - </h3>';
             throw new Exception($err . $e->getMessage());
