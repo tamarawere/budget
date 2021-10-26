@@ -1,0 +1,64 @@
+{% extends "uom_base.html" %}
+
+{% block header_css %}
+
+<link href="{{template}}extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+
+{% endblock header_css %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table id="uomList" class="table table-sm table-hover table-striped table-bordered no-wrap">
+                <thead>
+                    <tr>
+                        <th>Abbrev.</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% if uomList is defined and uomList is not null %}
+                    {% for uom in uomList %}
+
+                    {% if uom.uom_status == 1 %}
+                    {% set status = 'Active' %}
+                    {% else %}
+                    {% set status = 'Disabled' %}
+                    {% endif %}
+
+                    <tr>
+                        <th> <a href="{{uomPath}}{{uom.uom_id}}"> {{ uom.uom_abbrv }} </a> </th>
+                        <th> {{ uom.uom_abbrv }} </th>
+                        <th> {{ uom.uom_desc }} </th>
+                        <th> {{ uom.uom_status }} </th>
+                    </tr>
+
+                    {% endfor %}
+                    {% endif %}
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Abbrev.</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock page_content %}
+
+{% block footer_js %}
+<script src="{{template}}extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="{{template}}../dist/js/pages/datatable/datatable-basic.init.js"></script>
+<script src="{{js}}uomList.js"></script>
+{% endblock footer_js %}

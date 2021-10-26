@@ -5,78 +5,103 @@ declare(strict_types=1);
 namespace Budget\UOM;
 
 use Budget\Core\AppModel;
-use DateTime;
-use Exception;
 
-class UomModel extends AppModel
+use Exception;
+use Ramsey\Uuid\Uuid;
+
+class UomModel
 {
-    private $table = 'app_uom';
-    private $id = 'uom_id';
+    private $uomTbl = 'app_uom';
+    private $model;
+
+    public function __construct(AppModel $model)
+    {
+        $this->model = $model;
+    }
 
     public function getAllUoms(): ?array
     {
         try {
-            $sql = 'SELECT * FROM ' . $this->table;
-            $allUoms = $this->db->fetchAllAssociative($sql);
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to get all Units - Database Exception</h3>';
-            throw new Exception($err . $e->getMessage());
+
+            $result = $this->model->getByParams($this->uomTbl);
+
+            if ($result !== false) {
+                return $result;
+            }
+            return [];
+        } catch (Exception $e) {
+            return $GLOBALS['err'] . $e->getMessage();
         }
-        return $allUoms;
     }
 
     public function getUomById(string $id): ?array
     {
         try {
-            $sql = 'SELECT * FROM ' . $this->table . ' WHERE uom_id = ?';
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(1, $id);
-            return $stmt->execute()->fetchAllAssociative();
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to get Unit - Database Exception</h3>';
-            throw new Exception($err . $e->getMessage());
+            $args = [
+                'fields' => [
+                    'uom_id' => $id
+                ]
+            ];
+
+            $result = $this->model->getByParams($this->uomTbl, $args);
+
+            if ($result !== false) {
+                return $result;
+            }
+            return [];
+        } catch (Exception $e) {
+            return $GLOBALS['err'] . $e->getMessage();
         }
     }
 
     public function addUom(array $uom)
     {
         try {
-            // get user id for admin as default user
-            $sql = "SELECT user_id FROM app_users WHERE user_name LIKE '%Admin%'";
-            $result = $this->db->fetchAllAssociative($sql);
 
-            $this->db->insert(
-                $this->table,
-                array(
-                    'uom_name' => $uom['uom_name'],
-                    'uom_abbrv' => $uom['uom_abbrv'],
-                    'created_by' => $result[0]['user_id'],
-                    'updated_by' => $result[0]['user_id']
-                )
-            );
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to add Unit - Database Exception</h3>';
-            throw new Exception($err . $e->getMessage());
+            $newUom = [
+                'uom_id' => Uuid::uuid4(),
+                'uom_name' => $uom['uom_name'],
+                'uom_abbrv' => $uom['uom_abbrv'],
+                'uom_desc' => $uom['uom_desc'],
+                'uom_status' => $uom['uom_status'],
+                'created_at' => $this->model->now,
+                'updated_at' => $this->model->now,
+            ];
+            
+            $result = $this->model->add($this->uomTbl, $newUom);
+
+            if ($result > 0) {
+                return $result;
+            }
+            return false;
+        } catch (Exception $e) {
+            return $GLOBALS['err'] . $e->getMessage();
         }
     }
 
-    public function updateUom(array $uom)
+    public function updateUom(array $uom, $uomId)
     {
-        $update = new DateTime('now');
-        $updated_at = $update->format('Y-m-d H:i:s.u P');
         try {
-            $this->db->update(
-                $this->table,
-                array(
-                    'uom_name' => $uom['uom_name'],
-                    'uom_abbrv' => $uom['uom_abbrv'],
-                    'updated_at' => $updated_at,
-                ),
-                array($this->id => $uom[$this->id])
-            );
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to Update Category - Database Exception</h3>';
-            throw new Exception($err . $e->getMessage());
+            $updateUom = [
+                'uom_name' => $uom['uomName'],
+                'uom_abbrv' => $uom['uomAbbrv'],
+                'uom_desc' => $uom['uomDesc'],
+                'uom_status' => $uom['uomStatus'],
+                'updated_at' => $this->model->now,
+            ];
+
+            $condition = [
+                'uom_id' => $uomId
+            ];
+
+            $result = $this->model->updateByParams($this->uomTbl, $updateUom, $condition);
+
+            if ($result > 0) {
+                return $this->getUomById($uomId);
+            }
+            return false;
+        } catch (Exception $e) {
+            return $GLOBALS['err'] . $e->getMessage();
         }
     }
 
@@ -84,9 +109,8 @@ class UomModel extends AppModel
     {
         try {
             $this->db->delete($this->table, array($this->id => $id));
-        } catch (\Exception $e) {
-            $err = '<h3>Unable to Delete Unit - </h3>';
-            throw new Exception($err . $e->getMessage());
+        } catch (Exception $e) {
+            return $GLOBALS['err'] . $e->getMessage();
         }
     }
 }

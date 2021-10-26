@@ -6,72 +6,131 @@ namespace Budget\UOM;
 
 use Budget\Core\AppController;
 
-class UomController extends AppController
-{
-    private $uomModel, $responseBody;
+use Exception;
 
-    public function __construct()
+class UomController 
+{
+    private $model, $controller;
+
+    /**
+     * Tiltes for twig templates
+     */
+    private $titles = [];
+
+    public function __construct(AppController $controller, UomModel $model)
     {
-        parent::__construct();
-        $this->uomModel = new UomModel();
-        $this->responseBody = $this->appResponse->getBody();
+        $this->model = $model;
+        $this->controller = $controller;
+
+        $this->titles = $this->twigTitles();
+    }
+
+    private function twigTitles()
+    {
+        return [
+            'mod' => 'UNITS OF MEASURE',
+            'subMod' => 'UNITS DASHBOARD'
+        ];
+    }
+
+    /**
+     * ==========================================================================
+     * -------------SHOW PAGES FUNCTIONS
+     * ==========================================================================
+     */
+
+    public function showUomHomePage()
+    {
+        try {
+            $data = [
+                'title' => $this->titles,
+            ];
+            return $this->controller->setResponse('uom_home', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function showAllUomsPage()
+    {
+        try {
+            $title = $this->titles;
+            $title['subMod'] = 'All Units';
+
+            $data = [
+                'title' => $title,
+                'uomList' => $this->getAllUoms()
+            ];
+
+            return $this->controller->setResponse('uom_all', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function showAddUomPage()
+    {
+        try {
+            $title = $this->titles;
+            $title['subMod'] = 'Add Unit';
+
+            $data = [
+                'title' => $title,
+                'uomList' => $this->getAllUoms()
+            ];
+
+            return $this->controller->setResponse('uom_add', $data);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    /**
+     * ==========================================================================
+     * -------------GET DATA FUNCTIONS
+     * ==========================================================================
+     */
+    
+
+    public function getAllUoms()
+    {
+        try {
+            return $this->model->getAllUoms();
+        } catch (Exception $e) {
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
+        }
+    }
+
+    public function getUomById(array $id)
+    {
+        try {
+            return $this->model->getUomById($id['uomId']);
+        } catch (Exception $e) {
+            throw new Exception($GLOBALS['err'] . $e->getMessage(), 1);
+        }
     }
 
     public function addUom()
     {
-        if (empty($this->appRequest->getParsedBody())) {
-            $uomDetails = json_decode(file_get_contents("php://input"));
-        } else {
-            $uomDetails = $this->appRequest->getParsedBody();
-        }
+        $newUom = $this->controller->getPostData();
 
-        if (!empty($uomDetails)) {
+        if (!empty($newUom)) {
+
             try {
-                $this->uomModel->addUom((array)$uomDetails);
-                $this->responseBody->write('everything ok');
-                return $this->appResponse->withBody($this->responseBody);
-            } catch (\Exception $e) {
-                $this->responseBody->write($e->getMessage());
-                return $this->appResponse->withBody($this->responseBody);
+                
+                $result = $this->model->addUom($newUom);
+                
+                return $this->controller->setRedirect('uom/'.$result['uom_id']);
+            } catch (Exception $e) {
+                die($e->getMessage());
             }
         } else {
             $this->responseBody->write('have to write somethin');
             return $this->appResponse
                 ->withBody($this->responseBody)
                 ->withHeader('Content-Type', 'text/plain')
-                ->withStatus(400, 'no unit data received');
+                ->withStatus(400, 'no category data received');
         }
-    }
-
-    public function getAllUoms()
-    {
-        $uomArray = [];
-
-        try {
-            $uoms = $this->uomModel->getAllUoms();
-        } catch (\Exception $e) {
-            $this->responseBody->write($e->getMessage());
-            return $this->appResponse
-                ->withBody($this->responseBody)
-                ->withHeader('Content-Type', 'text/plain')
-                ->withStatus(400, 'DATABASE EXCEPTION');
-        }
-
-        foreach ($uoms as $unit) {
-            array_push($uomArray, $unit);
-        }
-        $result = json_encode($uomArray);
-        $this->responseBody->write($result);
-
-        return $this->appResponse->withBody($this->responseBody);
-    }
-
-    public function getUomById(array $id)
-    {
-        $uom = $this->uomModel->getUomById($id['id']);
-        $result = json_encode($uom);
-        $this->responseBody->write($result);
-        return $this->appResponse->withBody($this->responseBody);
     }
 
     public function updateUom(array $id)

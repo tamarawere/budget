@@ -51,6 +51,7 @@ $injector->delegate('Twig\Environment', function () use ($injector) {
         $twig->addGlobal('base_path', $base);
 
         $twig->addGlobal('catPath', $base.'categories/');
+        $twig->addGlobal('uomPath', $base.'uom/');
         $twig->addGlobal('dashPath', $base.'dash/');
         
         $twig->addGlobal('template', $GLOBALS['config']['twig']['template']);

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Budget\Categories;
 
 use Budget\Core\AppModel;
-use DateTime;
-use Exception;
-use Ramsey\Uuid\Nonstandard\Uuid;
 
-class CategoriesModel extends AppModel
+use Exception;
+use Ramsey\Uuid\Uuid;
+
+class CategoriesModel 
 {
     private $catTbl = 'app_categories';
     private $model;

@@ -1,0 +1,72 @@
+{% extends "uom_base.html" %}
+
+
+{% block page_content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Add New Unit</h3>
+                <form action="{{uomPath}}add" method="POST">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Unit Abbrev.</label>
+                                    <input name="uomAbbrv" type="text" class="form-control" placeholder="Abbreviation">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Unit Name</label>
+                                    <input name="uomName" type="text" class="form-control" placeholder="Unit Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="form-group">
+                                    <h4 class="card-title">Unit Description</h4>
+                                    <textarea name="uomDesc" class="form-control" rows="3"
+                                        placeholder="Add Description..."></textarea>
+                                    <small id="textHelp" class="form-text text-muted">
+                                        Add a short description for this measure (optional)
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6">
+                                <div class="form-group">
+                                    <h4 class="card-title">Unit Status</h4>
+                                    <div class="form-check form-check-inline">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" id="catStatusActive"
+                                                name="catStatus">
+                                            <label class="custom-control-label" for="catStatusActive">Active</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" id="catStatusDisabled"
+                                                name="catStatus">
+                                            <label class="custom-control-label" for="catStatusDisabled">Disabled</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="form-actions">
+                <div class="text-right">
+                    <button type="submit" class="btn btn-info">Submit</button>
+                    <button type="reset" class="btn btn-dark">Reset</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock page_content %}

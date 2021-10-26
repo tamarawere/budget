@@ -35,46 +35,49 @@ return [
 
     // UNITS OF MEASURE API
     ['GET', 'uom', [$uomController, 'getAllUoms']],
-    ['GET', 'uom/{id}', [$uomController, 'getUomById']],
+    ['GET', 'uom/home', [$uomController, 'showUomHomePage']],
+    ['GET', 'uom/all', [$uomController, 'showAllUomsPage']],
+    ['GET', 'uom/{uomId:'.$uuidRegex.'}', [$uomController, 'getUomById']],
+    ['GET', 'uom/add', [$uomController, 'showAddUomPage']],
     ['POST', 'uom/add', [$uomController, 'addUom']],
-    ['POST', 'uom/update/{id}', [$uomController, 'updateUom']],
-    ['POST', 'uom/delete/{id}', [$uomController, 'deleteUom']],
+    ['POST', 'uom/update/{uomId:'.$uuidRegex.'}', [$uomController, 'updateUom']],
+    ['POST', 'uom/delete/{uomId:'.$uuidRegex.'}', [$uomController, 'deleteUom']],
 
     // UNITS OF MEASURE FOR PACKAGAES API
     ['GET', 'lotunits', [$lotsController, 'getAllLotUnits']],
-    ['GET', 'lotunits/{id}', [$lotsController, 'getLotUnitById']],
+    ['GET', 'lotunits/{lotUnitId:'.$uuidRegex.'}', [$lotsController, 'getLotUnitById']],
     ['POST', 'lotunits/add', [$lotsController, 'addLotUnit']],
-    ['POST', 'lotunits/update/{id}', [$lotsController, 'updateLotUnit']],
-    ['POST', 'lotunits/delete/{id}', [$lotsController, 'deleteLotUnit']],
+    ['POST', 'lotunits/update/{lotUnitId:'.$uuidRegex.'}', [$lotsController, 'updateLotUnit']],
+    ['POST', 'lotunits/delete/{lotUnitId:'.$uuidRegex.'}', [$lotsController, 'deleteLotUnit']],
 
     // ITEMS GROUPS API
     ['GET', 'groups', [$itemGroupController, 'getAllItemGroups']],
-    ['GET', 'groups/{id}', [$itemGroupController, 'getItemGroupById']],
+    ['GET', 'groups/{groupId:'.$uuidRegex.'}', [$itemGroupController, 'getItemGroupById']],
     ['POST', 'groups/add', [$itemGroupController, 'addItemGroup']],
-    ['POST', 'groups/update/{id}', [$itemGroupController, 'updateItemGroup']],
-    ['POST', 'groups/delete/{id}', [$itemGroupController, 'deleteItemGroup']],
+    ['POST', 'groups/update/{groupId:'.$uuidRegex.'}', [$itemGroupController, 'updateItemGroup']],
+    ['POST', 'groups/delete/{groupId:'.$uuidRegex.'}', [$itemGroupController, 'deleteItemGroup']],
 
     // ITEMS API
     ['GET', 'items', [$itemController, 'getAllItems']],
-    ['GET', 'items/{id}', [$itemController, 'getItemById']],
+    ['GET', 'items/{itemId:'.$uuidRegex.'}', [$itemController, 'getItemById']],
     ['POST', 'items/add', [$itemController, 'addItem']],
-    ['POST', 'items/update/{id}', [$itemController, 'updateItem']],
-    ['POST', 'items/delete/{id}', [$itemController, 'deleteItem']],
+    ['POST', 'items/update/{itemId:'.$uuidRegex.'}', [$itemController, 'updateItem']],
+    ['POST', 'items/delete/{itemId:'.$uuidRegex.'}', [$itemController, 'deleteItem']],
 
     // USERS API 
     ['GET', 'users', [$userController, 'getAllUsers']],
-    ['GET', 'users/{id}', [$userController, 'getUserById']],
+    ['GET', 'users/{userId:'.$uuidRegex.'}', [$userController, 'getUserById']],
     ['POST', 'users/add', [$userController, 'addUser']],
-    ['POST', 'users/update/{id}', [$userController, 'updateUser']],
-    ['POST', 'users/delete/{id}', [$userController, 'deleteUser']],
+    ['POST', 'users/update/{userId:'.$uuidRegex.'}', [$userController, 'updateUser']],
+    ['POST', 'users/delete/{userId:'.$uuidRegex.'}', [$userController, 'deleteUser']],
 
     // PAYMENT MODES API 
     ['GET', 'modes', [$modeController, 'index']],
     //['GET', '/modes', [$modeController, 'getAllPaymentModes']],
-    ['GET', 'modes/{id}', [$modeController, 'getPaymentModeById']],
+    ['GET', 'modes/{modeId:'.$uuidRegex.'}', [$modeController, 'getPaymentModeById']],
     ['POST', 'modes/add', [$modeController, 'addPaymentMode']],
-    ['POST', 'modes/update/{id}', [$modeController, 'updatePaymentMode']],
-    ['POST', 'modes/delete/{id}', [$modeController, 'deletePaymentMode']],
+    ['POST', 'modes/update/{modeId:'.$uuidRegex.'}', [$modeController, 'updatePaymentMode']],
+    ['POST', 'modes/delete/{modeId:'.$uuidRegex.'}', [$modeController, 'deletePaymentMode']],
 
     ['GET', 'places', ['Budget\Categories\PlacesController', 'index']],
 
