@@ -1,0 +1,70 @@
+{% extends "cat_base.html" %}
+
+{% block header_css %}
+
+<link href="{{template}}extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+
+{% endblock header_css %}
+
+{% block cat_content %}
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table id="catList" class="table table-sm table-hover table-striped table-bordered no-wrap">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Parent</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% if catList is defined and catList is not null %}
+                    {% for cat in catList %}
+
+                    {% if cat.parent is defined and cat.parent is not empty %}
+                    {% set parent = cat.parent.category_name %}
+                    {% else %}
+                    {% set parent = 'None' %}
+                    {% endif %}
+
+                    {% if cat.status == 1 %}
+                    {% set status = 'Active' %}
+                    {% else %}
+                    {% set status = 'Disabled' %}
+                    {% endif %}
+
+                    <tr>
+                        <th> <a href="{{categories}}{{cat.category_id}}"> {{ cat.category_name }} </a> </th>
+                        <th> {{ parent }} </th>
+                        <th> {{ cat.category_desc }} </th>
+                        <th> {{ status }} </th>
+                    </tr>
+
+                    {% endfor %}
+                    {% endif %}
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Parent</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock cat_content %}
+
+{% block footer_js %}
+<script src="{{template}}extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="{{template}}../dist/js/pages/datatable/datatable-basic.init.js"></script>
+<script src="{{js}}catList.js"></script>
+{% endblock footer_js %}

@@ -1,0 +1,47 @@
+.card .card-title {
+  color: black;
+}
+
+.page-wrapper > .container-fluid {
+  padding-top: 15px;
+}
+
+.topbar .navbar-collapse {
+  border-bottom: 2px solid #cecece;
+}
+
+#main-wrapper[data-layout="vertical"]
+  .topbar
+  .navbar-collapse[data-navbarbg="skin6"],
+#main-wrapper[data-layout="vertical"] .topbar[data-navbarbg="skin6"],
+#main-wrapper[data-layout="horizontal"]
+  .topbar
+  .navbar-collapse[data-navbarbg="skin6"],
+#main-wrapper[data-layout="horizontal"] .topbar[data-navbarbg="skin6"] {
+  background: #f1f1f1;
+}
+
+.page-wrapper {
+  background: #fdfdfd;
+}
+
+.form-control,
+.custom-select {
+  border: 2px solid #d6dee6;
+  border-radius: 4px;
+}
+
+table > thead > tr > th {
+  text-transform: uppercase;
+}
+
+.sidebar-nav #sidebarnav .sidebar-item .sidebar-link {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.sidebar-nav #sidebarnav .sidebar-item .first-level .sidebar-item .sidebar-link {
+	padding-top: 5px;
+  padding-bottom: 5px;
+}
+

@@ -1,0 +1,118 @@
+{% extends "cat_base.html" %}
+
+
+{% block cat_content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Add New Category</h3>
+                <form action="{{catPath}}{{catDetails.category_id}}" method="POST">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Category Name</label>
+                                    <input name="catName" type="text" class="form-control"
+                                        value=" {{catDetails.category_name}} ">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Category Parent</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="catParent">
+                                                Select Parent Category
+                                            </label>
+                                        </div>
+                                        <select name="catParent" class="custom-select" id="catParent" required>
+                                            <option>--- Select Parent Category ---</option>
+                                            <option value="">None</option>
+
+                                            {% if catList is defined and catList is not null %}
+                                            {% for cat in catList %}
+
+                                            {% if cat.category_id != catDetails.category_id %}
+
+                                            {% if cat.category_id == catDetails.category_parent %}
+                                            <option value="{{ cat.category_id }}" selected> {{cat.category_name}}
+                                            </option>
+                                            {% else %}
+                                            <option value="{{ cat.category_id }}"> {{cat.category_name}} </option>
+                                            {% endif %}
+
+                                            {% endif %}
+
+                                            {% endfor %}
+                                            {% endif %}
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="form-group">
+                                    <h4 class="card-title">Category Description</h4>
+                                    <textarea name="catDesc" class="form-control" rows="3"
+                                        placeholder="Add Description...">{{ catDetails.category_desc }}</textarea>
+                                    <small id="textHelp" class="form-text text-muted">
+                                        Add a short description for this category (optional)
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6">
+                                <div class="form-group">
+                                    <h4 class="card-title">Category Status</h4>
+
+
+                                    <div class="form-check form-check-inline">
+                                        <div class="custom-control custom-radio">
+
+                                            {% if catDetails.status == 1 %}
+                                            <input type="radio" class="custom-control-input" id="catStatusActive"
+                                                name="catStatus" >
+                                            {% else %}
+                                            <input type="radio" class="custom-control-input" id="catStatusActive"
+                                                name="catStatus">
+                                            {% endif %}
+
+                                            <label class="custom-control-label" for="catStatusActive">Active</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <div class="custom-control custom-radio">
+
+                                            {% if catDetails.status == 0 %}
+                                            <input type="radio" class="custom-control-input" id="catStatusDisabled"
+                                                name="catStatus" checked>
+                                            {% else %}
+                                            <input type="radio" class="custom-control-input" id="catStatusActive"
+                                                name="catStatus">
+                                            {% endif %}
+
+                                            <label class="custom-control-label" for="catStatusDisabled">Disabled</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="form-actions">
+                <div class="text-right">
+                    <button type="submit" class="btn btn-info">Submit</button>
+                    <button type="reset" class="btn btn-dark">Reset</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock cat_content %}

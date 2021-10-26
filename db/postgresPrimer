@@ -1,0 +1,8 @@
+drop database learndev;
+\c learntest
+\d+
+\dt
+\l
+create database learn
+CREATE EXTENSION "uuid-ossp";
+SELECT * FROM pg_available_extensions;

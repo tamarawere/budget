@@ -1,0 +1,17 @@
+@use '../utils/breakpoints' as bp;
+@use '../utils/colours' as cl;
+@use '../utils/mixins' as mx;
+
+.messages {
+    @include mx.drop-down;
+    @media (min-width: bp.$bp-992) {
+        @include mx.drop-down(top,0,center);
+    }
+}
+
+#messagesToggle {
+    border-right: 4px solid rgb(102, 102, 102);
+    @media(min-width: bp.$bp-992) {
+        border-right: 0;
+    }
+}

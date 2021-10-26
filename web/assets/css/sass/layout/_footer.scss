@@ -1,0 +1,42 @@
+@use '../utils/breakpoints'as bp;
+@use '../utils/mixins'as mx;
+@use '../utils/colours'as cl;
+
+#footer {
+    background-color: cl.$grey1;
+    font-size: .6em;
+    padding-left: .6em;
+    padding-right: .6em;
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+
+    span {
+        order: 0;
+        flex-grow: 1;
+        flex-basis: 50%;
+        color: cl.$grey5;
+        font-weight: bold;
+    }
+
+    ul {
+        text-align: right;
+        order: 1;
+        flex-grow: 1;
+        flex-basis: 50%;
+        font-weight: bold;
+
+        li a {
+            color: cl.$grey5;
+        }
+    }
+
+    @media (min-width: bp.$bp-992) {
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+        font-size: .7em;
+    }
+}

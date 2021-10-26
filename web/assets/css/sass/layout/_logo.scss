@@ -1,0 +1,20 @@
+@use '../utils/breakpoints'as bp;
+@use '../utils/colours'as cl;
+
+.logo {
+    width: 100%;
+    height: 100%;
+
+    a div {
+        width: 100%;
+        height: 100%;
+        background-image: url('../img/logo-tslm.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+
+        @media (min-width: bp.$bp-992) {
+            background-image: url('logo-taslimu.png');
+        }
+    }
+}

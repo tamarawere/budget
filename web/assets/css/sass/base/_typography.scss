@@ -1,0 +1,33 @@
+@use '../utils/mixins' as mx;
+$system-font: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",system-ui,Arial,sans-serif;
+$sans: 'Quicksand', Arial, Helvetica, sans-serif !default;
+$serif: "Times New Roman", Times, serif!default;
+$mono: "Lucida Console", Courier, monospace !default;
+$heading-font-family: $system-font !default;
+$header-title-font-family: $heading-font-family !default;
+$header-subtitle-font-family: $heading-font-family !default;
+
+$h1: 2.2em !default;
+$h2: 1.5em !default;
+$h3: 1.3em !default;
+$h4:   1em !default;
+$h5:  .9em !default;
+$h6:  .8em !default;
+
+@mixin fonts($font-style: sans) {
+    @if $font-style == sans {
+        font-family: $sans;
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 28px;
+    } @else {
+        font-family: $system-font;
+        font-size: 1.125rem;
+        font-weight: 400;
+        line-height: 28px;
+    }
+}
+
+body {
+    @include fonts(sans);
+}

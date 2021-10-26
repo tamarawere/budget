@@ -1,0 +1,44 @@
+@use '../utils/breakpoints'as bp;
+@use '../utils/mixins'as mx;
+@use '../utils/colours' as cl;
+
+.search {
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+}
+
+.search i {
+    display: none;
+}
+
+.search input {
+    text-align: left;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 2px solid cl.$grey3;
+    border-radius: 20px;
+    padding-bottom: 0;
+    width: 80%;
+
+    @media (min-width: bp.$bp-600) {
+        width: 70%
+    }
+
+    @media (min-width: bp.$bp-768) {
+        width: 60%
+    }
+
+    @media (min-width: bp.$bp-992) {
+        width: 90%
+    }
+}
+
+.search-results {
+    @include mx.drop-down(top,0,center);
+    
+    @media (min-width: bp.$bp-992) {
+        text-align: left;
+    }
+}

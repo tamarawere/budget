@@ -1,0 +1,23 @@
+@use '../utils/colours'as cl;
+
+button {
+    border: 2px solid cl.$blu;
+    border-radius: 20px;
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: 500;
+    padding: 5px 20px 5px 20px;
+    color: cl.$grey5;
+    transition-property: all;
+    transition-duration: 2900ms;
+    transition-timing-function: cubic-bezier(0, .6, 0, 1);
+}
+
+button:hover {
+    color: cl.$blu1;
+    font-weight: bold;
+    background-color: cl.$blue4;
+    transition-property: all;
+    transition-duration: 2900ms;
+    transition-timing-function: cubic-bezier(0, .6, 0, 1);
+}

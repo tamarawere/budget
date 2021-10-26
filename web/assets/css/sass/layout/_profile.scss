@@ -1,0 +1,68 @@
+@use '../utils/breakpoints'as bp;
+@use '../utils/colours'as cl;
+@use '../utils/mixins'as mx;
+
+.profile {
+    @include mx.drop-down;
+
+    @media (min-width: bp.$bp-992) {
+        @include mx.drop-down(top, 0, right);
+    }
+    div ul {
+        li:first-child{
+            border-bottom: 2px solid cl.$grey2;
+        }
+        li:last-child {
+                border-top: 2px solid cl.$grey2;
+            }
+    }
+}
+
+#profileToggle {
+    h5 {
+        display: none;
+
+        @media (min-width: bp.$bp-992) {
+            display: block;
+        }
+    }
+
+    div {
+        display: none;
+    }
+
+    @media (min-width: bp.$bp-992) {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+
+        i {
+            order: 0;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        @media (min-width: bp.$bp-1140) {
+
+            div {
+                display: initial;
+                order: 1;
+                flex-grow: 2;
+                align-self: flex-start !important;
+                line-height: .6em;
+                text-align: left;
+                padding-right: .5em;
+
+                label {
+                    font-size: .8em;
+                    display: block;
+                }
+
+                small {
+                    font-size: .6em;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

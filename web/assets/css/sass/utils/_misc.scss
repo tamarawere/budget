@@ -1,0 +1,11 @@
+@use '../utils/mixins'as mx;
+
+.menu-active {
+    transform: scaleY(1);
+    opacity: 1;
+    color: rgb(39, 39, 39);
+}
+                           
+.menu-toggle {
+    @include mx.toggle-btn;
+}
